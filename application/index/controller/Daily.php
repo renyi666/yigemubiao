@@ -243,4 +243,15 @@ class Daily extends Base
 
         return $this->fetch();
     }
+
+    /**评论页面
+     * @return mixed
+     */
+    public  function comment(){
+
+        $userInfo = session('userInfo');
+        $this->assign('userInfo', $userInfo);
+
+        return $this->fetch();
+    }
 }

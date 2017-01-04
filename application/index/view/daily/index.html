@@ -124,7 +124,7 @@
                                                 {/if}
                                             </div>
                                             <p>{$daplan.content}</p>
-                                            <a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                            <a href="{:url('comment',array('dailyplanid'=>$daplan['id'],'group_id'=>$groupInfo['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
                                         </div>
                                     </li>
                                     {/volist}
@@ -151,7 +151,7 @@
                                                 {/if}
                                             </div>
                                             <p>{$dawork.content}</p>
-                                            <a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                            <a href="{:url('comment',array('dailyplanid'=>$dawork['id'],'group_id'=>$groupInfo['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
                                         </div>
                                     </li>
                                     {/volist}

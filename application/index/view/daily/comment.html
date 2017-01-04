@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>评论</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="{:url('Group/index')}">
+						{$groupInfo.name}
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="" class="active">一个目标</a>
+				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+				<a href="nim_comment.html">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="one_info">
+			<div class="comment_head">
+				<a href="javascript:history.go(-1)">返回</a>
+			</div>
+			<div class="comment_info">
+				<h3>发表评论</h3>
+				<form action="">
+					<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder=""></textarea>
+					<div class="ci_item">
+						<p class="lg_btn_p fcolor_red" >× 请输入正确的手机号或密码</p>
+						
+						<!--<label class="checkbox-inline">-->
+						  <!--<input type="checkbox" id="inlineCheckbox1" value="option1"> 匿名-->
+						<!--</label>-->
+						<label class="checkbox-inline">
+						  <input type="checkbox" id="inlineCheckbox2" value="option2"> 差评
+						</label>
+						<span id="comment_fb">发布</span>
+						<i>凡是匿名的评论的，数据库也不准记录评论人，程序员也无法查看，做到真正的匿名！！！</i>
+					</div>
+				</form>
+				<div class="comment_list">
+					<h3>评论5条&nbsp;&nbsp;差评1条</h3>
+					<ul>
+						<li>
+							<h4>
+								<span>忠言逆耳利于行</span>
+								2016年3月1日 12:00
+								<i>差评</i>
+							</h4>
+							<p>
+								审核中！！！！
+							</p>
+						</li>
+						<li>
+							<h4>
+								<span>忠言逆耳利于行</span>
+								2016年3月1日 12:00
+								<i>差评</i>
+							</h4>
+							<p>
+								该条匿名评论审核未通过！！！
+							</p>
+						</li>
+						<li>
+							<h4>
+								<span>忠言逆耳利于行</span>
+								2016年3月1日 12:00
+								<i>差评</i>
+							</h4>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
+viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+ Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
+							</p>
+						</li>
+						<li>
+							<h4>
+								<span>忠言逆耳利于行</span>
+								2016年3月1日 12:00
+							</h4>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
+viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+ Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		window.editor=KindEditor.create('textarea.kindeditor', {
+		    basePath: '__PUBLIC__/kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+		
+		$("#content").focus(function(){
+			$("#content").text('');
+			$(".fcolor_red").hide();
+		});
+		$("#comment_fb").click(function(){
+		    var userName		=	$("#content").text();
+			/******判断手机号密码是否为空*******/
+			if(userName==''||userName==null||userName==undefined){
+	    		$(".fcolor_red").show()
+	    						  .text('× 别着急，你还没有写任何东西哟！')
+	    						  .css('text-align','left');
+	    		return;				  
+	    	}else{
+	    			  
+	    	}
+	    });
+	});
+</script>
+</body>
+</html>
