@@ -24,6 +24,7 @@
 namespace app\index\controller;
 
 
+use app\index\model\DailyComment;
 use app\index\model\DailyPlan;
 use app\index\model\GroupMember;
 use app\index\model\Member;
@@ -52,6 +53,7 @@ class Daily extends Base
         /*
          * 把明天和今天的时间赋值到模板
          */
+
         $tommorrowLimit = $tommorrow + 1;
         $this->assign('tommorrow', $tommorrowLimit);
         $today = time();
@@ -251,6 +253,18 @@ class Daily extends Base
 
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
+       $dailyPlan['id'] =   input('dailyplanid');
+        $dailyPlanM  =  new  DailyPlan();
+        $dailyCommentM      =    new  DailyComment();
+        $dailyPlanResult    =   $dailyPlanM->findOne($dailyPlan);
+        if($dailyPlanResult==null||$dailyPlanResult==""){
+
+            $this->redirect('Baocuo/index');
+        }
+        $dailyCommentWhere['dailyplan_id']  =   input('dailyplanid');
+        $dailyCommentResult =   $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
+        $this->assign('dailyCommentResult',$dailyCommentResult);
+        $this->assign('dailyPlanResult',$dailyPlanResult);
 
         return $this->fetch();
     }
