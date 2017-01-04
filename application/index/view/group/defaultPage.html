@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>人</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="{:url('Group/index')}">
+						<input type="hidden" class="group_id" value="{$group_result.id}">
+						{$group_result.name}
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_ target.html">一个目标</a>
+				<a href="daily_paper.html">日报</a>
+				<a href="{:url('Thing/index',array('group_id'=>$group_result.id))}">事</a>
+				<a href="#" class="active">人</a>
+				{if condition="$position_result.position eq 1"}
+				<a href="">匿名评论审核</a>
+				{/if}
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="{:url('Member/userData')}"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="person">
+			<div class="person-add">
+				<input type="tel" value="" placeholder="输入手机号" class="person-add_input">
+				<button id="add_user">增加成员</button>
+			</div>
+			<p class="lg_btn_p fcolor_red" >× 请输入正确的手机号</p>
+			<div class="person_screen">
+				<span>按照首字母拼音排序</span>
+				<select class="filter">
+					<option value="0" >全部</option>
+					<option value="1" {if condition ="$status eq 1"}selected{/if}>在职</option>
+					<option value="2"{if condition ="$status eq 2"}selected{/if}>离职</option>
+				</select>
+			</div>
+			<div class="person_table">
+				<table>
+					<thead>
+						<tr>
+							<th>姓名</th>
+							<th>手机号</th>
+							<th>身份</th>
+							<th>状态</th>
+							<th>上月是否送出差评</th>
+							<th>本月目标</th>
+							<th>管理</th>
+						</tr>
+					</thead>
+					<tbody>
+					{volist name='result' id='res'}
+						<tr>
+							<td>{$res.nickname}</td>
+							<td class="person_phone">{$res.mobile}</td>
+							<td>{if condition="$res.position eq 1"}组长{else/}组员{/if}</td>
+							<td class="person_state">{if condition="$res.status eq 1"}在职{else/}离职{/if}</td>
+							<td>是</td>
+							<td><a href="one_ target.html">有</a></td>
+
+							<td><span data-state="{$res.status}" data-uid="{$res.id}" class="group_user_status">{if condition="$res.status eq 1"}标记为已离职{else/}标记为在职{/if}</span></td>
+
+						</tr>
+					{/volist}
+						<!--<tr>-->
+							<!--<td>郭贺</td>-->
+							<!--<td class="person_phone">15092071500</td>-->
+							<!--<td>组员</td>-->
+							<!--<td class="person_state">在职</td>-->
+							<!--<td>是</td>-->
+							<!--<td>无</td>-->
+							<!--<td><span data-state="0">标记为已离职</span></td>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<td>郭贺</td>-->
+							<!--<td class="person_phone">15092071500</td>-->
+							<!--<td>组员</td>-->
+							<!--<td class="person_state">离职</td>-->
+							<!--<td>否</td>-->
+							<!--<td>无</td>-->
+							<!--<td><span data-state="1">标记为在职</span></td>-->
+						<!--</tr>-->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+
+		//标记离职在职
+
+		$('.group_user_status').click(function () {
+			var user_group_id	=$('.group_id').val();
+			var number	=	$(this).attr('data-state');
+			var uid	=	$(this).attr('data-uid');
+
+			$.ajax(
+					{
+						url: "{:url('Group/editStatus')}",
+						data: {group_id: user_group_id,status:number,user_id:uid},
+						dataType: 'json',
+						method: 'post',
+						success: function (data) {
+
+							if(data=="1"){
+
+								window.location.reload();
+							}else {
+								$(".fcolor_red").show()
+										.text(data.msg)
+										.css('text-align','left')
+										.css('margin-top','-15px');
+							}
+
+
+						}
+					}
+			)
+
+
+		})
+		//筛选在职离职
+		$('.filter').change(function () {
+			var user_group_id	=$('.group_id').val();
+			var user_status	=	$('.filter').val();
+
+			var url	="{:url('Group/defaultPage')}";
+
+			url	=	url.substr(0,(url.length-5));
+			url=url+"/group_id/"+user_group_id+"/status/"+user_status;
+			window.location.href=url;
+		})
+
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+
+		//添加组员
+		$("#add_user").click(function(){
+			var userName		=	$(".person-add_input").val();
+			var user_group_id	=$('.group_id').val();
+			/******判断手机号密码。否为空*******/
+			if(userName==''||userName==null||userName==undefined){
+				$(".fcolor_red").show()
+						.text('× 手机号不可为空！')
+						.css('text-align','left')
+						.css('margin-top','-15px');
+			}else if(userName && /^1[3|4|5|7|8]\d{9}$/.test(userName)){
+				/***手机号格式判断*/
+
+				$.ajax(
+						{
+							url: "{:url('Group/addUser')}",
+							data: {group_id: user_group_id,mobile:userName},
+							dataType: 'json',
+							method: 'post',
+							success: function (data) {
+
+								if(data=="1"){
+
+									window.location.reload();
+								}else {
+									$(".fcolor_red").show()
+											.text(data.msg)
+											.css('text-align','left')
+											.css('margin-top','-15px');
+								}
+
+
+							}
+						}
+				)
+
+//				var tr = $('<tr></tr>');
+//				var html=
+//						'<td></td>'+
+//						'<td class="person_phone">'+userName+'</td>'+
+//						'<td>组员</td>'+
+//						'<td class="person_state">在职</td>'+
+//						'<td>否</td>'+
+//						'<td>无</td>'
+//				tr.append(html);
+//				$(".person_table table tbody").append(tr);
+//				var td	  =	 $('<td></td>');
+//				var span  =  $('<span></span>');
+//				td.appendTo(tr);
+//				span.text('标记为已离职');
+//				td.attr('data-state','0');
+//				span.appendTo(td);
+
+//				$('.person_phone').each(function(){
+//					var phone = $(this).text();
+//					var mphone = phone.substr(0, 3) + '****' + phone.substr(8, 11);
+//					$(this).text(mphone);
+//				});
+//				$(".person_table table tbody tr td span").click(function(){
+//					var number	=	$(this).attr('data-state');
+//					console.log(number);
+//					if(number==1){
+//						$(this).attr('data-state','0');
+//						$(this).text('标记为在职');
+//						$(this).parent().siblings('.person_state').text('离职')
+//					}else{
+//						$(this).attr('data-state','1');
+//						$(this).text('标记已离职');
+//						$(this).parent().siblings('.person_state').text('在职')
+//					}
+//				});
+			}else{
+				$(".fcolor_red").show()
+						.text('× 请输入正确的手机号！')
+						.css('text-align','left')
+						.css('margin-top','-15px');
+			}
+			$(".person-add_input").val('');
+		})
+
+
+	    $(".person-add_input").focus(function(){
+	    	$(".fcolor_red").hide();
+	    });
+	});
+</script>
+</body>
+</html>

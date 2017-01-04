@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+
+
+<div class="container-fluid container-width-l">
+    <div class="row">
+        <div class="col-md-12">
+            <img src="__PUBLIC__/images/logo.png" alt="" class="image_logo">
+        </div>
+        <div class="col-md-12">
+            <p class="lg_tip">新用户初始密码为123456，为了安全，请及时密码</p>
+        </div>
+
+        <div class="container lg_form">
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="#" role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputTel" placeholder="输入手机号">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="exampleInputPassword" placeholder="输入密码">
+                        </div>
+                        <p class="lg_btn_p">
+                            <button type="button" class="btn btn-primary btn-block" id="login">登录</button>
+                        </p>
+                        <p class="lg_btn_p fcolor_red">× 请输入正确的手机号或密码</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+
+        $("#login").click(function () {
+            $(".fcolor_red").hide()
+            var userName = $("#exampleInputTel").val();
+            var userPassword = $("#exampleInputPassword").val();
+            /******判断手机号密码是否为空*******/
+            if (userName == '' || userName == null || userName == undefined || userPassword == '' || userPassword == null || userPassword == undefined) {
+
+                $(".fcolor_red").show()
+                        .text('× 用户名或密码不为空！');
+            } else if (userName && /^1[3|4|5|7|8]\d{9}$/.test(userName)) {
+                /***手机号格式判断*/
+
+
+                $(".fcolor_red").hide()
+
+
+                var login_mobile = $('#exampleInputTel').val();
+                var login_password = $('#exampleInputPassword').val();
+                $.ajax(
+                        {
+                            url: "{:url('Index/login')}",
+                            data: {mobile: login_mobile, password: login_password},
+                            dataType: 'json',
+                            method: 'post',
+                            success: function (data) {
+
+                                if (data == "1") {
+
+                                    window.location.href = "{:url('Group/index')}"
+                                } else {
+
+                                    $(".fcolor_red").show()
+                                            .text(data.msg);
+
+                                }
+
+
+                            }
+                        }
+                )
+
+
+            } else {
+
+                $(".fcolor_red").show()
+                        .text('× 请输入正确的手机号！');
+            }
+        });
+    })
+</script>
+
+
+</body>
+</html>

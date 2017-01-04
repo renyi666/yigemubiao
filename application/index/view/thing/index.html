@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="{:url('Group/index')}">
+						{$groupInfo.name}
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_target.html">一个目标</a>
+				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+				<a href="#" class="active">项目</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+				{if condition="$position_result eq 1"}
+				<a href="">匿名评论审核</a>
+				{/if}
+
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<input type="hidden" class="group_id" value="{$groupInfo.id}">
+		<div class="one_info">
+			<div class="one_info_top">
+				<form action="" role="form">
+
+					<div class="oit_l">
+						<select class="select">
+							<option value="0">全部</option>
+
+							{volist name="select_result" id="seres"}
+							<option value="{$seres.id}"{if condition="$selectUserID eq $seres.id"}selected{else/}{/if}>{$seres.nickname}</option>
+
+							{/volist}
+						</select>
+					</div>
+					<div class="thing_head">
+						<input type="text" value="" class="thing_name"/>
+						<span class="search">搜索</span>
+						<a href="{:url('Thing/add',array('group_id'=>$groupInfo['id']))}" id="add_thing">增加</a>
+					</div>
+				</form>
+			</div>
+			<div class="thing_info">
+				<ul>
+					{volist name="result" id="res"}
+					<li>
+
+						<div class="thing_title">
+							<a href="{:url('detail',array('group_id'=>$groupInfo['id'],'thing_id'=>$res['id']))}">
+								<span>{$res.name}</span> -
+								<span>{$res.nickname}</span>
+							</a>
+						</div>
+						{if condition="$res.shoucang eq  1"}
+						<div class="thing_state">已收藏</div>
+						<div class="thing_state_button" data-state="{$res.id}" data-groupId="{$res.group_id}">取消收藏</div>
+					{else/}
+						<div class="thing_state"></div>
+						<div class="thing_state_button"  data-state="{$res.id}" data-groupId="{$res.group_id}">收藏</div>
+						{/if}
+					</li>
+					{/volist}
+
+				</ul>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		KindEditor.create('textarea.kindeditor', {
+		    basePath: 'kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+
+		//搜索
+		$('.search').click(function () {
+
+			 var thing_name	=$('.thing_name').val();
+			var  groupId	=$('.group_id').val();
+			var url	="{:url('Thing/index')}";
+			url	=	url.substr(0,(url.length-5));
+			if(thing_name==null||thing_name==""){
+
+				url=url+"/group_id/"+groupId;
+			}else {
+				url=url+"/name/"+thing_name+"/group_id/"+groupId;
+
+
+			}
+			window.location.href=url;
+		})
+		$('.select').change(function () {
+
+			var  userId	=$('.select').val();
+			var  groupId	=$('.group_id').val();
+			var url	="{:url('Thing/index')}";
+			url	=	url.substr(0,(url.length-5));
+			url=url+"/id/"+userId+"/group_id/"+groupId;
+			window.location.href=url;
+		})
+		//收藏或者取消收藏
+	    $(".thing_state_button").click(function(){
+	    	var thing_id	=	$(this).attr('data-state');
+			var groupId	=	$(this).attr('data-groupId');
+
+			$.ajax(
+					{
+						url: "{:url('ThingCollection/thingCollection')}",
+						data: {thing_id: thing_id,group_id:groupId},
+						dataType: 'json',
+						method: 'post',
+						success: function (data) {
+
+							if (data == "1") {
+								window.location.reload();
+
+							} else {
+
+								alert(data.msg)
+
+
+							}
+
+
+						}
+					}
+			)
+
+
+		});
+	});
+</script>
+</body>
+</html>

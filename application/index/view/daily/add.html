@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新增计划</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="{:url('Group/index')}">
+						{$groupInfo.name}
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_target.html">一个目标</a>
+				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+				<a href="nim_comment.html">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<input type="hidden" class="dailyId" value="{$DailyId}">
+		<input type="hidden" class="type" value="{$Type}">
+		<input type="hidden" class="groupId" value="{$groupInfo.id}">
+		<div class="one_info">
+			<div class="add_daily_paper">
+				<form action="">
+					<div class="add_dp_item">
+						<label><span>排</span>序：</label>
+						<input type="tel" value="" class="add_dp_number"/>
+					</div>
+					<div class="add_dp_item">
+						<label><span>时</span>间：</label>
+						<input type="tel" value="" class="add_dp_time time1"/><i>时</i>
+						<input type="tel" value="" class="add_dp_time time2"/><i>分</i>
+						<i style="margin-left:0;">至</i>
+						<input type="tel" value="" class="add_dp_time time3"/><i>时</i>
+						<input type="tel" value="" class="add_dp_time time4"/><i>分</i>
+					</div>
+					<div class="add_dp_item">
+						<label>选择事：</label>
+						<select class="add_dp_choose" name="add_dp_choose">
+
+							{volist name="thingCoRes" id="thcores"}
+							<option value="{$thcores.id}">{$thcores.name}</option>
+							{/volist}
+						</select>
+						<!--<input type="text" value="" class="add_dp_choose"/>-->
+						<!--<button type="button">搜索</button>-->
+						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增事</a>
+					</div>
+					<!--<div class="add_dp_item2">-->
+						<!--<ul>-->
+
+							<!--<li>-->
+								<!--<input type="radio" value="{$thcores.id}" name="thing" class="add_dp_thing"/><span>{$thcores.name}</span>-->
+							<!--</li>-->
+
+
+						<!--</ul>-->
+					<!--</div>-->
+					<div class="add_dp_item">
+						<label><span>描</span>述：</label>
+						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder=""></textarea>
+					</div>
+					<p class="lg_btn_p fcolor_red" >× 请输入正确的手机号或密码</p>
+					<div class="add_dp_item">
+						<label></label>
+						<a id="add_dp_save">保存</a>
+						<a href="daily_paper.html" style="margin-left:45px;" id="add_dp_cancel">取消</a>
+					</div>
+					
+				</form>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		window.editor=KindEditor.create('textarea.kindeditor', {
+		    basePath: '__PUBLIC__/kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+		
+		$(".add_dp_number,.add_dp_time,#content").focus(function(){
+		   	$(".fcolor_red").hide();
+		});
+//		$('.add_dp_thing').click(function () {
+//
+//			var thingId	=	$(this).val();
+//			console.log(thingId);
+//
+//		})
+		$("#add_dp_save").click(function(){
+
+			$("#content").val($(".article-content").text());
+
+			var sort		=	$(".add_dp_number").val();
+			var time1			=	$(".time1").val();
+			var time2			=	$(".time2").val();
+			var time3			=	$(".time3").val();
+			var time4			=	$(".time4").val();
+			var content			=	editor.html();
+			var dailyId	=	$('.dailyId').val();
+			var type	=	$('.type').val()
+			var thingId	=$('.add_dp_choose').val();
+
+			console.log(dailyId);
+			console.log(content)
+			/******判断排序是否为空*******/
+			if(sort==''||sort==null||sort==undefined||isNaN(sort)){
+				$(".fcolor_red").show()
+						.text('× 排序错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}
+			if(time1==''||time1==null||time1==undefined||isNaN(time1)){
+				$(".fcolor_red").show()
+						.text('× 时间错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}if(time2==''||time2==null||time2==undefined||isNaN(time2)){
+				$(".fcolor_red").show()
+						.text('× 时间错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}
+			if(time3==''||time3==null||time3==undefined||isNaN(time3)){
+				$(".fcolor_red").show()
+						.text('× 时间错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}
+
+			if(time4==''||time4==null||time4==undefined||isNaN(time4)){
+				$(".fcolor_red").show()
+						.text('× 时间错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}
+			if(content==''||content==null||content==undefined){
+				$(".fcolor_red").show()
+						.text('× 描述错误！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+			}
+			if(thingId==''||thingId==null||thingId==undefined){
+
+				$(".fcolor_red").show()
+						.text('× 事不可为空！')
+						.css('text-align','left')
+						.css('padding-left','70px');
+				return;
+
+			}
+
+			$.ajax(
+					{
+
+						url:"{:url('DailyPlan/addPlan')}",						data:{sort:sort,
+							daily_id:dailyId,
+							time1:time1,time2:time2,time3:time3,time4:time4,
+							content:content,type:type,thing_id:thingId,
+
+						},
+						dataType: 'json',
+						method: 'post',
+						success:function (data) {
+							if(data.status=="success"){
+								var groupId	=	$('.groupId').val();
+								var url	=	"{:url('index')}";
+								url=	url.substr(0,url.length-5);
+								url=url+"/group_id/"+groupId;
+								window.location.href=url;
+							}
+							if(data.status=="fail"){
+
+								alert(data.msg)
+							}
+
+						}
+
+
+					}
+			)
+
+
+		});
+
+	})
+</script>
+</body>
+</html>

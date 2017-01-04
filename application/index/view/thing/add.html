@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新增事</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+
+	<!-- Latest compiled and minified CSS -->
+
+
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="choose_group.html">
+					{$groupInfo.name}
+						<input type="hidden" value="{$groupInfo.id}" class="group_id">
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_target.html">一个目标</a>
+				<a href="daily_paper.html">日报</a>
+				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}" class="active">事</a>
+				<a href="person.html">人</a>
+				<a href="nim_comment.html">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="one_info">
+			<div class="add_thing">
+				{if condition ="$panduan eq 0"}
+				<h3>增加事</h3>{else/}
+				<h3>编辑事</h3>{/if}
+				<input type="hidden" value="{$panduan}" class="panduan">
+				<form action="">
+					<div class="add_thing_item">
+						<span>事：</span>
+						{if condition ="$panduan eq 0"}
+						<input type="text" value="" class="thing_name"/>
+						{else/}
+						<input type="text" value="{$thing_result.name}" class="thing_name"/>
+						<input type="hidden" value="{$thing_result.id}" class="thing_id">
+						{/if}
+					</div>
+					<div class="add_thing_item">
+						<span>责任人：</span>
+						<!--<select class="charge_user selectpicker"  >-->
+						<select id="example-multiple-selected" multiple="multiple" >
+
+						{volist name="member_result" id="mem"}
+							<option value="{$mem.id}" {if condition="$userInfo.id eq $mem.id"} selceted{/if}>{$mem.nickname}</option>
+							{/volist}
+						</select>
+
+					</div>
+					<p class="lg_btn_p fcolor_red" >× 事不可为空</p>
+					<div class="add_thing_item">
+						<span></span>
+						<button type="button" id="thing_save">保存</button>
+						<a href="javascript:history.go(-1)">取消</a>
+					</div>
+
+				</form>
+			</div>
+		</div>	
+	</div>
+</div>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.4.min.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>-->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<!--<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>-->
+
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap-multiselect.js" ></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<!-- Latest compiled and minified JavaScript -->
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/css/bootstrap-multiselect.css">
+
+<script>
+
+
+	$(function() {
+		$('#example-multiple-started').multiselect();
+		KindEditor.create('textarea.kindeditor', {
+		    basePath: 'kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+	    $(".thing_state_button").click(function(){
+	    	var number	=	$(this).attr('data-state');
+			if(number==1){
+				$(this).attr('data-state','0');
+	    		$(this).text('取消收藏');
+	    		$(this).siblings('.thing_state').text('已收藏')
+			}else{
+				$(this).attr('data-state','1');
+	    		$(this).text('收藏');
+	    		$(this).siblings('.thing_state').text('')
+			}
+	   });
+	   $(".add_thing_item input").focus(function(){
+	   		$(".thing_name input").val('');
+	   		$(".fcolor_red").hide()
+	   });
+	   $("#thing_save").click(function(){
+	   		var userName		=	$(".thing_name").val();
+			var charge_user		=	$('.charge_user').val();
+		   var panduan		=	$('.panduan').val();
+
+		   var id	=$('.group_id').val();
+			if(userName==''||userName==null||userName==undefined){
+	    		$(".fcolor_red").show()
+	    						  .css('text-align','left')
+	    						  .css("padding-left","65px")
+	    						  .css('margin-top','-20px')
+	    						  .css('margin-bottom','10px');
+	    	}else{
+
+			if(panduan=="1"){
+
+				var thing_id		=	$('.thing_id').val();
+
+				$.ajax(
+						{
+							url: "{:url('Thing/addThing')}",
+							data: {name: userName,user_id:charge_user,id:thing_id},
+							dataType: 'json',
+							method: 'post',
+							success: function (data) {
+
+								if (data == "1") {
+									var url	=	"{:url('index')}";
+									url	=	url.substr(0,(url.length)-5);
+
+									window.location.href=url+"/group_id/"+id;
+
+								} else {
+
+									$(".fcolor_red").show().text(data.msg)
+											.css('text-align','left')
+											.css("padding-left","65px")
+											.css('margin-top','-20px')
+											.css('margin-bottom','10px');
+
+
+								}
+
+
+							}
+						}
+				)
+			}else {
+				$.ajax(
+						{
+							url: "{:url('Thing/addThing')}",
+							data: {name: userName,user_id:charge_user,group_id:id},
+							dataType: 'json',
+							method: 'post',
+							success: function (data) {
+
+								if (data == "1") {
+									var url	=	"{:url('index')}";
+									url	=	url.substr(0,(url.length)-5);
+
+									window.location.href=url+"/group_id/"+id;
+
+								} else {
+
+									$(".fcolor_red").show().text(data.msg)
+											.css('text-align','left')
+											.css("padding-left","65px")
+											.css('margin-top','-20px')
+											.css('margin-bottom','10px');
+
+
+								}
+
+
+							}
+						}
+				)
+
+			}
+
+
+	    	}
+	   });
+	});
+</script>
+</body>
+</html>

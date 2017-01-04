@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个目标</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="one_container">
+        <div class="one_nav">
+            <div class="one_nav_l">
+                <h2>
+                    <a href="{:url('Group/index')}">
+                        {$groupInfo.name}
+                        <input type="hidden" class="group_id" value="{$groupInfo.id}">
+                        <img src="__PUBLIC__/images/one.png"/>
+                    </a>
+                </h2>
+            </div>
+            <div class="one_nav_m">
+                <a href="one_target.html">一个目标</a>
+                <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
+                <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
+                <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+                <a href="nim_comment.html">匿名评论审核</a>
+            </div>
+            <div class="one_nav_r">
+                <span>{$userInfo.nickname}</span>
+                （<i class="phone">{$userInfo.mobile}</i>）
+                <a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+            </div>
+        </div>
+        <div class="one_info">
+            <div class="one_info_top">
+                <form action="" role="form">
+
+                    <div class="oit_l">
+                        <select class="groupuser">
+                            {volist name="groupUserInfo" id="groupUser"}
+                            <option class="phone2" value="{$groupUser.user_id}"{if condition="$nowUserId eq $groupUser.user_id"}selected{/if}>{$groupUser.user_name}</option>
+                            {/volist}
+
+                        </select>
+                    </div>
+                    <div class="daily_paper_year">
+                        <select style="margin-right:10px;">
+                            <option>2016年12月</option>
+                            <option>2017年1月</option>
+                            <option>2017年2月</option>
+                            <option>2017年3月</option>
+                            <option>2017年4月</option>
+                            <option>2017年5月</option>
+                            <option>2017年6月</option>
+                            <option>2017年7月</option>
+                            <option>2017年8月</option>
+                            <option>2017年9月</option>
+                            <option>2017年10月</option>
+                            <option>2017年11月</option>
+                            <option>2017年12月</option>
+                        </select>
+                        <span>至</span>
+                        <select style="margin-left:10px;">
+                            <option>2016年12月</option>
+                            <option>2017年1月</option>
+                            <option>2017年2月</option>
+                            <option>2017年3月</option>
+                            <option>2017年4月</option>
+                            <option>2017年5月</option>
+                            <option>2017年6月</option>
+                            <option>2017年7月</option>
+                            <option>2017年8月</option>
+                            <option>2017年9月</option>
+                            <option>2017年10月</option>
+                            <option>2017年11月</option>
+                            <option>2017年12月</option>
+                        </select>
+                    </div>
+                    <div class="daily_paper_add">
+                        <form name="form1" method="post" action="">
+
+                            <select name="year" style="width: 50px;margin-right: 5px;" value="{$tommorrowData.year}">
+                            </select>年
+                            <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"
+                                    value="{$tommorrowData.month}">
+                            </select>月
+                            <select name="day" style="width: 35px;margin-left:5px;margin-right:5px;"
+                                    value="{$tommorrowData.day}">
+                            </select>日
+                        </form>
+                        <button type="button" id="add_time">增加日期</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="daily_paper_info">
+            <ul>
+                {volist name="dailyResult" id="dares"}
+
+                <li>
+                    <div class="dpi_list">
+                        <div class="dpi_list_top">
+                            <h3>{:date('Y年m月d日',$dares.limit_time)}(周{$dares.week})</h3>
+                            <div class="dpil_top_title">
+                                <span>当日计划</span>
+                                {if condition="$dares.limit_time gt $today"} <a
+                                    href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>1])}">增加</a>{/if}
+
+                            </div>
+                            <div class="dpil_top_info">
+                                <ul>
+                                    {volist name="$dares.plan" id="daplan"}
+                                    <li>
+                                        <div class="dpilt_info_item">
+                                            <div class="dpilti_item_title">
+                                                <span>{$i}.{$daplan.name}</span>
+                                                {if condition="$dares.limit_time gt $today"}
+                                                <a href="{:url('edit',array('id'=>$daplan['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
+                                                <button class="deletePlan" data-id="{$daplan.id}">删除</button>
+                                                {/if}
+                                            </div>
+                                            <p>{$daplan.content}</p>
+                                            <a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                        </div>
+                                    </li>
+                                    {/volist}
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dpi_list_top dpi_list_bottom">
+                            <div class="dpil_top_title dpil_bottom_title">
+                                <span>实际工作</span>
+                                {if condition="$dares.timeDifference eq 1"} <a href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>2])}">增加</a>{/if}
+
+                            </div>
+                            <div class="dpil_top_info dpil_bottom_info">
+                                <ul>
+                                    {volist name="$dares.work" id="dawork"}
+                                    <li>
+                                        <div class="dpilt_info_item dpilb_info_item">
+                                            <div class="dpilti_item_title dpilbi_item_title">
+                                                <span>{$i}.{$dawork.name}</span>
+                                                {if condition="$dares.timeDifference eq 1"}
+                                                <a href="{:url('edit',array('id'=>$dawork['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
+                                                <button class="deletePlan" data-id="{$dawork.id}">删除</button>
+                                                {/if}
+                                            </div>
+                                            <p>{$dawork.content}</p>
+                                            <a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                        </div>
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {/volist}
+
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+    $('document').ready(function () {
+
+        /**********日期三联动****************/
+        /*
+         * 生成级联菜单
+         */
+        var i = 2016;
+        var date = new Date();
+        year = date.getFullYear();//获取当前年份
+        var dropList;
+        for (i; i < 2020; i++) {
+            if (i == year) {
+                dropList = dropList + "<option value='" + i + "' selected>" + i + "</option>";
+            } else {
+                dropList = dropList + "<option value='" + i + "'>" + i + "</option>";
+            }
+        }
+        $('select[name=year]').html(dropList);//生成年份下拉菜单
+        var monthly;
+        for (month = 1; month < 13; month++) {
+            monthly = monthly + "<option value='" + month + "'>" + month + "</option>";
+        }
+        $('select[name=month]').html(monthly);//生成月份下拉菜单
+        var dayly;
+        for (day = 1; day <= 31; day++) {
+            dayly = dayly + "<option value='" + day + "'>" + day + "</option>";
+        }
+        $('select[name=day]').html(dayly);//生成天数下拉菜单
+        /*
+         * 处理每个月有多少天---联动
+         */
+        $('select[name=month]').change(function () {
+            var currentDay;
+            var Flag = $('select[name=year]').val();
+            var currentMonth = $('select[name=month]').val();
+            switch (currentMonth) {
+                case "1" :
+                case "3" :
+                case "5" :
+                case "7" :
+                case "8" :
+                case "10" :
+                case "12" :
+                    total = 31;
+                    break;
+                case "4" :
+                case "6" :
+                case "9" :
+                case "11" :
+                    total = 30;
+                    break;
+                case "2" :
+                    if ((Flag % 4 == 0 && Flag % 100 != 0) || Flag % 400 == 0) {
+                        total = 29;
+                    } else {
+                        total = 28;
+                    }
+                default:
+                    break;
+            }
+            for (day = 1; day <= total; day++) {
+                currentDay = currentDay + "<option value='" + day + "'>" + day + "</option>";
+            }
+            $('select[name=day]').html(currentDay);//生成日期下拉菜单
+        })
+        /*************电话****控制*************/
+        $('.phone').each(function () {
+            var phone = $(this).text();
+            var mphone = phone.substr(0, 3) + '****' + phone.substr(8, 11);
+            $(this).text(mphone)
+        });
+        $('.phone2').each(function () {
+            var phone = $(this).text();
+            var mphone = phone.substr(0, 3) + '****' + phone.substr(8, 11);
+
+        });
+
+        $('#add_time').click(function () {
+
+            var group_id = $('.group_id').val();
+
+            var day = $("select[name='day']").val();
+            var year = $("select[name='year']").val();
+            var month = $("select[name='month']").val();
+            alert(day)
+            alert(year)
+
+
+            $.ajax(
+                    {
+                        url: "{:url('Daily/add_plan_empty')}",
+                        data: {group_id: group_id, year: year, month: month, day: day},
+                        dataType: 'json',
+                        method: 'post',
+                        success: function (data) {
+
+                            if (data == "1") {
+
+                                window.location.reload();
+                            } else {
+
+                                console.log(data)
+                                alert(data.msg);
+                            }
+
+
+                        }
+                    }
+            )
+        })
+        $('.groupuser').change(function () {
+            var group_id = $('.group_id').val();
+            var userId1  =   $('.groupuser').val();
+        console.log(group_id);
+            console.log(userId1)
+
+            var url =   "{:url('Daily/index')}"
+            url	=	url.substr(0,(url.length-5));
+            url=url+"/userId/"+userId1+"/group_id/"+group_id;
+            window.location.href=url;
+        })
+        $('.deletePlan').click(function () {
+
+            var id  =$(this).attr("data-id");
+            $.ajax(
+                    {
+                        url: "{:url('DailyPlan/deletePlan')}",
+                        data: {id: id},
+                        dataType: 'json',
+                        method: 'post',
+                        success: function (data) {
+
+                            if (data == "1") {
+
+                                window.location.reload();
+                            } else {
+
+                                console.log(data)
+                                alert(data.msg);
+                            }
+
+
+                        }
+                    }
+            )
+        })
+    })
+</script>
+</body>
+</html>

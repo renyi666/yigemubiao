@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>选择项目组</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid container-width-l">
+	<div class="row">
+		<div class="row">
+			<img src="__PUBLIC__/images/logo.png" alt="" class="image_logo">
+		</div>
+		<div class="add_form">
+			<form action="#" role="form">
+				<div class="add_group">
+					<div class="add_group_top">
+						<input type="text" name="group_name" value="" class="group_name"/>
+						<!--<a href="" class="add_button">创建小组</a>-->
+						<div class="add_button">创建小组</div>
+					</div>
+					<div class="add_group_bottom">
+						<h2>已加入小组</h2>
+						<ul>
+							{volist name='result' id='res'}
+							<li>
+								<h3><a href="{:url('defaultPage',array('group_id'=>$res['id']))}">{$res.name}</a></h3>
+							</li>
+							{/volist}
+
+						</ul>
+					</div>
+				</div>
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function(){
+
+	$('.add_button').click(function () {
+
+		var group_name	=	$('.group_name').val();
+		if(group_name==null||group_name==''){
+			alert('请填写完整')
+		}else {
+
+			$.ajax(
+					{
+						url: "{:url('Group/createGroup')}",
+						data: {name: group_name},
+						dataType: 'json',
+						method: 'post',
+						success: function (data) {
+
+							if (data == "1") {
+								window.location.reload();
+
+							} else {
+
+								alert(data.msg)
+
+
+							}
+
+
+						}
+					}
+			)
+
+		}
+
+	})
+
+
+
+	})
+
+</script>
+</body>
+
+
+</html>

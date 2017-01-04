@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="one_container">
+        <div class="one_nav">
+            <div class="one_nav_l">
+                <h2>
+                    <a href="{:url('Group/index')}">
+                        {$group_result.name}
+                        <img src="__PUBLIC__/images/one.png"/>
+                    </a>
+                </h2>
+            </div>
+            <div class="one_nav_m">
+                <a href="one_ target.html">一个目标</a>
+                <a href="">日报</a>
+                <a href="{:url('Thing/index')}">事</a>
+
+                <a href="{:url('Group/defaultPage',array('group_id'=>$group_result.id))}">人</a>
+                {if condition="$position_result eq 1"}
+                <a href="">匿名评论审核</a>
+                {/if}
+            </div>
+            <div class="one_nav_r">
+                <span>{$result.nickname}</span>
+                （<i class="phone">{$result.mobile}</i>）
+                <a href="#"><img src="__PUBLIC__/images/set.png"></a>
+            </div>
+        </div>
+        <div class="user_set">
+            <div class="us_title">
+                <span>个人设置</span>
+            </div>
+            <form action="">
+                <div class="us_form_item">
+                    <label>原手机号：</label>
+                    <span>{$result.mobile}</span>
+                </div>
+                <div class="us_form_item">
+                    <label>新手机号：</label>
+                    <input type="tel" value="" class="user_input" id="new_phone"/>
+                </div>
+                <div class="us_form_item">
+                    <label>姓名：</label>
+                    <input type="text" value="" class="user_input" id="user_name"/>
+                </div>
+                <div class="us_form_item">
+                    <label>新密码：</label>
+                    <input type="password" value="" class="user_input" id="new_password"/>
+                </div>
+                <p class="lg_btn_p fcolor_red">× 请输入正确的手机号或密码</p>
+                <div class="us_form_item">
+                    <a id="submit">提交</a>
+                    <a id="cancel">取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $(".user_input").focus(function () {
+            $(this).val('');
+            $(".fcolor_red").hide();
+        });
+        $("#submit").click(function () {
+            var userName = $("#user_name").val();
+            var userPhone = $("#new_phone").val();
+            var userPassword = $("#new_password").val();
+            /******判断手机号密码是否为空*******/
+//            if (userPhone == '' && userPhone == null && userPhone == undefined && userName == '' && userName == null && userName == undefined && userPassword == '' && userPassword == null && userPassword == undefined) {
+//                $(".fcolor_red").show()
+//                        .text('× 必填项不可为空！');
+//                return;
+//            } else if (userPhone && /^1[3|4|5|7|8]\d{9}$/.test(userPhone)) {
+//                /***手机号格式判断*/
+//                $(".fcolor_red").hide()
+
+                var user_mobile = $('#new_phone').val();
+                var user_nickname = $('#user_name').val();
+                var user_password = $('#new_password').val();
+
+                $.ajax(
+                        {
+                            url: "{:url('Member/editUser')}",
+                            data: {mobile: user_mobile, nickname: user_nickname, password: user_password},
+                            dataType: 'json',
+                            method: 'post',
+                            success: function (data) {
+                                if (data == "1") {
+
+                                    window.location.reload();
+                                } else {
+                                    $(".fcolor_red").show()
+                                            .text('data.msg');
+                                }
+
+
+                            }
+                        }
+                )
+
+//            } else {
+//                $(".fcolor_red").show()
+//                        .text('× 请输入正确的手机号！');
+//            }
+
+        });
+        $('#cancel').click(function () {
+            window.location.reload();
+        })
+
+    });
+</script>
+</body>
+</html>

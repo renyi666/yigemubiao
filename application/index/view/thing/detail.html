@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事描述</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="choose_group.html">
+						{$groupInfo.name}
+						<input type="hidden" value="{$groupInfo.id}" class="group_id">
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_target.html">一个目标</a>
+				<a href="{:url('Daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}" class="active">项目</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+				<a href="nim_comment.html">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>张三</span>
+				（<i class="phone">13945689988</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="one_info">
+			<div class="one_info_top thing_message_head">
+				<span>{$result.name}</span>
+
+				<input type="hidden" value="{$result.id}" class="thing_id">
+				<input type="hidden" value="{$userInfo.id}" class="user_id">
+				<input type="hidden" value="{$result.name}" class="thing_name">
+				<span>&nbsp;-&nbsp;{$result.user_name}</span>
+				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$result['id']))}" class="compile_thing">编辑</a>
+			</div>
+			<div class="thing_message">
+				<div class="thing_top">
+					<div class="thing_top_item">
+						<a href="#" class="active">描述</a>
+						<a href="{:url('paper',array('thing_id'=>$result['id']))}">日报</a>
+					</div>
+					<div class="thing_top_item2">
+						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder="" readonly="true"></textarea>
+					</div>
+
+					<div class="thing_top_item3">
+						{if condition="$result.condition eq 1"}
+						<i>警告：责任人--{$result.user_name}&nbsp;已超过30天未对此事做新的描述</i>{/if}
+
+						<button class="publish">发布新描述</button>
+					</div>
+				</div>
+				<div class="one_info">
+					<div class="nim_comment">
+						<div class="nimc_top comment_list nimc_bottom">
+							<ul>
+								{volist name="log_result" id="log_res"}
+								<li>
+									<h4>
+										<span>{$log_res.user_name}</span>
+										{:date('Y-m-d H:i:s',$log_res['create_time'])}
+									</h4>
+									<p>
+										{$log_res.content}
+									</p>
+									<a href="{:url('Comment/index',array('group_id'=>$groupInfo['id'],'thing_log_id'=>$log_res['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+								</li>
+								{/volist}
+								<!--<li>-->
+									<!--<h4>-->
+										<!--<span>李冰</span>-->
+										<!--2016年3月1日 12:00-->
+									<!--</h4>-->
+									<!--<p>-->
+										<!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et -->
+			<!--viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.-->
+			 <!--Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.-->
+									<!--</p>-->
+								<!--</li>-->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script src="__PUBLIC__/kindeditor/lang/zh-CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+
+
+		window.editor	=	KindEditor.create('textarea.kindeditor', {
+		    basePath: '__PUBLIC__/kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : true,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+
+		$('.publish').click(function () {
+			var group_id	=	$('.group_id').val();
+			var thing_id	=	$('.thing_id').val();
+			var user_id	=	$('.user_id').val();
+			var thing_name	=	$('.thing_name').val();
+			var content	=	editor.html();
+			console.log(content);
+			$.ajax(
+					{
+						url: "{:url('Thing/editThing')}",
+						data: {thing_id: thing_id,content:content,group_id:group_id,user_id:user_id,name:thing_name},
+						dataType: 'json',
+						method: 'post',
+						success: function (data) {
+
+							if (data == "1") {
+								var url	=	"{:url('index')}";
+								url	=	url.substr(0,(url.length)-5);
+
+								window.location.reload();
+
+
+							} else {
+
+								$(".fcolor_red").show().text(data.msg)
+										.css('text-align','left')
+										.css("padding-left","65px")
+										.css('margin-top','-20px')
+										.css('margin-bottom','10px');
+
+
+							}
+
+
+						}
+					}
+			)
+		})
+	});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事日报</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="choose_group.html">
+						小组的名字小组的
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="one_target.html">一个目标</a>
+				<a href="daily_paper.html">日报</a>
+				<a href="thing.html" class="active">事</a>
+				<a href="person.html">人</a>
+				<a href="nim_comment.html">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="one_info">
+			<div class="one_info_top thing_message_head">
+				<span>事件的名字事件的名字</span> 
+				<span>&nbsp;-&nbsp;郭贺（创建者的名字）</span>
+				<a href="add_thing.html" class="compile_thing">编辑</a>
+			</div>
+			<div class="thing_message">
+				<div class="thing_top" style="border:none;padding-bottom:0;">
+					<div class="thing_top_item">
+						<a href="thing_message.html">描述</a>
+						<a href="thing_daily_paper.html" class="active">日报</a>
+					</div>
+					<div class="thing_bottom">
+						<div class="thing_select">
+							<select>
+								<option>全部</option>
+								<option>郭贺</option>
+								<option>李冰</option>
+								<option>郭贺</option>
+								<option>李冰</option>
+								<option>郭贺</option>
+								<option>李冰</option>
+							</select>
+						</div>
+						<div class="thing_seek">
+							 <form name="form1" method="post" action="">
+				                <select name="year" style="width: 50px;margin-right: 5px;"></select>年
+				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"></select>月
+				                <span>——</span>
+				                <select name="year" style="width: 50px;margin-right: 5px;"></select>年
+				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"></select>月
+				            </form>
+				            <button type="button">查询</button>
+						</div>
+					</div>
+				</div>
+				<div class="one_info">
+					<div class="nim_comment">
+						<div class="nimc_top comment_list nimc_bottom">
+							<ul>
+								<li>
+									<h4>
+										<span>郭贺</span>
+										2016年3月1日 12:00
+									</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
+			viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+			 Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
+									</p>
+									<a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+								</li>
+								<li>
+									<h4>
+										<span>李冰</span>
+										2016年3月1日 12:00
+									</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
+			viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+			 Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
+									</p>
+									<a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+$('document').ready(function(){
+	
+	/**********日期三联动****************/
+    /*
+     * 生成级联菜单
+     */
+    var i=2016;
+    var date = new Date();
+    year = date.getFullYear();//获取当前年份
+    var dropList;
+    for(i;i<2020;i++){
+        if(i == year){
+            dropList = dropList + "<option value='"+i+"' selected>"+i+"</option>";
+        }else{
+            dropList = dropList + "<option value='"+i+"'>"+i+"</option>";
+        }
+    }
+    $('select[name=year]').html(dropList);//生成年份下拉菜单
+    var monthly;
+    for(month=1;month<13;month++){
+        monthly = monthly + "<option value='"+month+"'>"+month+"</option>";
+    }
+    $('select[name=month]').html(monthly);//生成月份下拉菜单
+  })
+	$(function() {
+		KindEditor.create('textarea.kindeditor', {
+		    basePath: 'kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+	    
+	});
+</script>
+</body>
+</html>
