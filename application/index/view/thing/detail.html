@@ -31,8 +31,8 @@
 				<a href="nim_comment.html">匿名评论审核</a>
 			</div>
 			<div class="one_nav_r">
-				<span>张三</span>
-				（<i class="phone">13945689988</i>）
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
 				<a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 									<p>
 										{$log_res.content}
 									</p>
-									<a href="{:url('Comment/index',array('group_id'=>$groupInfo['id'],'thing_log_id'=>$log_res['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+									<a href="{:url('thing/comment',array('group_id'=>$groupInfo['id'],'thing_log_id'=>$log_res['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
 								</li>
 								{/volist}
 								<!--<li>-->

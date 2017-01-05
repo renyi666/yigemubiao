@@ -37,6 +37,7 @@ class DailyComment extends Base
         $dailyCommentM  = new  \app\index\model\DailyComment();
         $request   =  Request::instance();
         $list   =$request->param();
+
         $result =   $dailyCommentM->addComment($list);
         return $result;
 

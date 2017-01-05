@@ -24,8 +24,8 @@
             </div>
             <div class="one_nav_m">
                 <a href="" >一个目标</a>
-                <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}"class="active">日报</a>
-                <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
+                <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+                <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}"class="active">项目</a>
                 <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
                 <a href="nim_comment.html">匿名评论审核</a>
             </div>
@@ -54,7 +54,7 @@
                             <input type="checkbox" id="inlineCheckbox2" value=""> 差评
                             <input type="checkbox" id="commenttype" value="">
                         </label>
-                        <input type="hidden" class="dailyplanid" value="{$dailyPlanResult.id}">
+                        <input type="hidden" class="thinglogId" value="{$thingLogResult.id}">
                         <span id="comment_fb">发布</span>
                         <!--<i>凡是匿名的评论的，数据库也不准记录评论人，程序员也无法查看，做到真正的匿名！！！</i>-->
                     </div>
@@ -154,7 +154,7 @@
             $(".fcolor_red").hide();
         });
         $("#comment_fb").click(function () {
-            var dailyplanID = $('.dailyplanid').val();
+            var dailyplanID = $('.thinglogId').val();
             var content = editor.html();
             var type = $('#inlineCheckbox2').val();
             /******判断手机号密码是否为空*******/
@@ -169,7 +169,7 @@
                 $.ajax(
                         {
                             url: "{:url('DailyComment/addComment')}",
-                            data: {dailyplan_id: dailyplanID, content: content, type: type},
+                            data: {thinglog_id: dailyplanID, content: content, type: type},
                             dataType: 'json',
                             method: 'post',
                             success: function (data) {

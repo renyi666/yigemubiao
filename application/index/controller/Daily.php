@@ -263,6 +263,19 @@ class Daily extends Base
         }
         $dailyCommentWhere['dailyplan_id']  =   input('dailyplanid');
         $dailyCommentResult =   $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
+        //统计出有几条评论，几个差评
+        $commentData['number']  =   count($dailyCommentResult);//总共有几个评论
+        $count=0;
+
+        for($i=0;$i<$commentData['number'];$i++){
+
+            if($dailyCommentResult[$i]['type']==1){
+
+                $count+=1;
+            }
+        }
+        $commentData['count']   =$count;
+        $this->assign('commentData',$commentData);//评论的数目和差评的数目
         $this->assign('dailyCommentResult',$dailyCommentResult);
         $this->assign('dailyPlanResult',$dailyPlanResult);
 
