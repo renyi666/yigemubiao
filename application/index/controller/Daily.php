@@ -102,6 +102,7 @@ class Daily extends Base
         $dailyWhere['group_id'] = input('group_id');
         $dailyResult = $dailyM->getAll($dailyWhere);
 
+        //从dailyplan表里查出工作计划和实际工作
         foreach ($dailyResult as $key => $value) {
 
             $dailyPlanWhere['daily_id'] = $value['id'];
@@ -122,6 +123,13 @@ class Daily extends Base
 
             }
         }
+
+
+
+
+
+
+
 
         $this->assign('dailyResult', $dailyResult);
 

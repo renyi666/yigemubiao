@@ -28,7 +28,7 @@
 
                 <a href="{:url('Group/defaultPage',array('group_id'=>$group_result.id))}">人</a>
                 {if condition="$position_result eq 1"}
-                <a href="">匿名评论审核</a>
+                <a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
                 {/if}
             </div>
             <div class="one_nav_r">

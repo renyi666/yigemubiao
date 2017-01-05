@@ -32,7 +32,7 @@
 				<a href="daily_paper.html">日报</a>
 				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}" class="active">事</a>
 				<a href="person.html">人</a>
-				<a href="nim_comment.html">匿名评论审核</a>
+				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 			</div>
 			<div class="one_nav_r">
 				<span>{$userInfo.nickname}</span>

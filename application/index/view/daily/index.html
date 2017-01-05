@@ -27,7 +27,7 @@
                 <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
                 <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
                 <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
-                <a href="nim_comment.html">匿名评论审核</a>
+                <a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
             </div>
             <div class="one_nav_r">
                 <span>{$userInfo.nickname}</span>
@@ -124,7 +124,7 @@
                                                 {/if}
                                             </div>
                                             <p>{$daplan.content}</p>
-                                            <a href="{:url('comment',array('dailyplanid'=>$daplan['id'],'group_id'=>$groupInfo['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                            <a href="{:url('comment',array('dailyplanid'=>$daplan['id'],'group_id'=>$groupInfo['id']))}"><h3>评论{$daplan.comment_number}条&nbsp;&nbsp;差评{$daplan.comment_count}条</h3></a>
                                         </div>
                                     </li>
                                     {/volist}
@@ -151,7 +151,7 @@
                                                 {/if}
                                             </div>
                                             <p>{$dawork.content}</p>
-                                            <a href="{:url('comment',array('dailyplanid'=>$dawork['id'],'group_id'=>$groupInfo['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+                                            <a href="{:url('comment',array('dailyplanid'=>$dawork['id'],'group_id'=>$groupInfo['id']))}"><h3>评论{$dawork.comment_number}条&nbsp;&nbsp;差评{$dawork.comment_count}条</h3></a>
                                         </div>
                                     </li>
                                     {/volist}

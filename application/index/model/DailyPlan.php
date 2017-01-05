@@ -37,16 +37,54 @@ class DailyPlan extends Model
      */
     public function getPlanByDailyId($parm)
     {
+
+        $dailyComment = new DailyComment();
         $parm['type'] = 1;
-        return $this->where($parm)->order('sort desc')->select();
+
+        $result = $this->where($parm)->order('sort desc')->select();
+
+        //统计评论数目和差评数目
+        foreach ($result as  $key =>$value){
+            $where['dailyplan_id']  =   $value['id'];
+            $result[$key]['comment']    =   $dailyComment->getAllByDailyPlanId($where);
+            $result[$key]['comment_number'] =   count($result[$key]['comment']);
+            $result[$key]['comment_count']=0;
+            foreach ($result[$key]['comment'] as $k =>$v){
+
+                if($v['type']==1){
+
+                    $result[$key]['comment_count']+=1;
+                }
+            }
+
+        }
+        return $result;
 
     }
 
     public function getWorkByDailyId($parm)
     {
-
+        $dailyComment = new DailyComment();
         $parm['type'] = 2;
-        return $this->where($parm)->order('sort desc')->select();
+        $result =$this->where($parm)->order('sort desc')->select();
+
+        //统计评论数目和差评数目
+
+        foreach ($result as  $key =>$value){
+            $where['dailyplan_id']  =   $value['id'];
+            $result[$key]['comment']    =   $dailyComment->getAllByDailyPlanId($where);
+            $result[$key]['comment_number'] =   count($result[$key]['comment']);
+            $result[$key]['comment_count']=0;
+            foreach ($result[$key]['comment'] as $k =>$v){
+
+                if($value['type']==1){
+
+                    $result[$key]['comment_count']+=1;
+                }
+            }
+
+        }
+        return $result;
     }
 
     /**增加
