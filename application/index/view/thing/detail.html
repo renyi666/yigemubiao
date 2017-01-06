@@ -50,7 +50,7 @@
 				<div class="thing_top">
 					<div class="thing_top_item">
 						<a href="#" class="active">描述</a>
-						<a href="{:url('paper',array('thing_id'=>$result['id']))}">日报</a>
+						<a href="{:url('paper',array('thing_id'=>$result['id'],'group_id'=>$groupInfo['id']))}">日报</a>
 					</div>
 					<div class="thing_top_item2">
 						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder="" readonly="true"></textarea>

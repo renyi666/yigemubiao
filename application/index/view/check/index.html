@@ -24,9 +24,9 @@
 			</div>
 			<div class="one_nav_m">
 				<a href="one_target.html">一个目标</a>
-				<a href="daily_paper.html">日报</a>
-				<a href="thing.html">事</a>
-				<a href="person.html">人</a>
+				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				<a href={:url('check/index',array('group_id'=>$groupInfo['id']))}" class="active">匿名评论审核</a>
 			</div>
 			<div class="one_nav_r">
@@ -39,7 +39,7 @@
 			<div class="nim_comment">
 				<div class="nimc_top comment_list">
 					<h2>待审核&nbsp;{$dailyCommentResultNumber}条
-						<a id="nimc_top_yes">全部通过</a>
+						<a id="" href="{:url('checkComment',array('group_id'=>$groupInfo['id'],'status'=>1))}">全部通过</a>
 					</h2>
 					<ul>
 						{volist name="dailyCommentResult" id="dacom"}
@@ -50,8 +50,8 @@
 								{if condition="$dacom.type eq 1"}
 								<i>差评</i>
 								{/if}
-								<a class="nim_yes">通过</a>
-								<a class="nim_no">不通过</a>
+								<a class="" href="{:url('checkComment',array('id'=>$dacom['id'],'check'=>1))}">通过</a>
+								<a class="" href="{:url('checkComment',array('id'=>$dacom['id'],'check'=>2))}">不通过</a>
 							</h4>
 							<p>
 								{$dacom.content}

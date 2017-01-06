@@ -26,9 +26,42 @@ namespace app\index\model;
 
 use think\Model;
 
-class UserComment extends  Model
+class UserComment extends Model
 {
 
     protected $autoWriteTimestamp = true;
 
+
+    public function addComment($parm)
+    {
+
+        return $this->save($parm);
+    }
+
+    /**根据条件修改状态
+     * @param $parm
+     * @return int|string
+     */
+    public function editUserComment($parm)
+    {
+
+        $where['status'] = $parm['check'];
+        unset($parm['check']);
+        $where['update_time'] = time();
+        return $this->where($parm)->update($where);
+
+    }
+
+    /**全部tongguo
+     * @param $parm
+     * @return int|string
+     */
+    public  function allEdit($parm){
+
+        $list['status'] =1;
+        $list['update_time']    =   time();
+        return $this->where($parm)->update($list);
+
+
+    }
 }

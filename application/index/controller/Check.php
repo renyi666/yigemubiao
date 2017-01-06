@@ -25,6 +25,7 @@ namespace app\index\controller;
 
 
 use app\index\model\DailyComment;
+use app\index\model\UserComment;
 
 class Check extends Base
 {
@@ -53,6 +54,56 @@ class Check extends Base
         $this->assign('dailyCommentResultFail', $dailyCommentResultFail);
 
         return $this->fetch();
+    }
+
+    public  function checkComment(){
+        $userInfo = session('userInfo');
+        $url    =   $_SERVER['HTTP_REFERER'];
+        $dailyCommentM  =  new  DailyComment();
+
+        $userCommentM   =  new  UserComment();
+        $receiveData['group_id']    =   input('group_id');
+        //判断点击了全部通过
+        if(isset($receiveData['group_id'])&&is_numeric($receiveData['group_id'])){
+
+
+
+            $receiveData['status']=0;
+
+            $UserCommentResult  =$userCommentM->allEdit($receiveData);
+            $result =   $dailyCommentM->allEdit($receiveData);
+
+
+
+        }else{
+            //没有点击全部通过
+
+            $list['id'] =   input('id');
+            $list['status'] =   input('check');
+            if(!isset($list['id'])||!isset($list['status'] )){
+
+
+                $this->redirect('Baocuo/index');
+            }
+
+            $result = $dailyCommentM->editComment($list);
+
+
+            $where['comment_id']    =   input('id');
+            $where['user_id']   =   $userInfo['id'];
+            $where['check']=input('check');
+
+            $UserCommentResult  =   $userCommentM->editUserComment($where);
+
+
+        }
+
+
+        $this->redirect($url);
+
+
+
+
     }
 
 }

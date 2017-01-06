@@ -339,6 +339,7 @@ class Thing extends Base
             $this->redirect('Baocuo/index');
         }
         $dailyCommentWhere['thinglog_id']  =   input('thing_log_id');
+
         $dailyCommentResult =   $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
         //统计出有几条评论，几个差评
         $commentData['number']  =   count($dailyCommentResult);//总共有几个评论
