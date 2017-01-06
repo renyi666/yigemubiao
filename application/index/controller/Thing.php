@@ -376,6 +376,7 @@ class Thing extends Base
             $dailyWhere['id']   =   $value['daily_id'];
             $dailyResult=$dailyM->getOne($dailyWhere);
             $DailyPaper[$key]['user_id']= $memberWhere['id']=$Dailyresult[$key]['user_id']    =  $dailyResult['user_id'];
+
            $Dailyresult[$key]['group_id']    =  $dailyResult['user_id'];
             $DailyPaper[$key]['user_name']=  $Dailyresult[$key]['user_name'] =   $memberM->getNameById($memberWhere);
 
@@ -394,7 +395,7 @@ class Thing extends Base
 
 
 
-
+            $this->assign('dailypaper',$DailyPaper);
 
 
 
@@ -424,7 +425,7 @@ class Thing extends Base
         }
 
 
-        $this->assign('dailypaper',$DailyPaper);
+
         $this->assign('dailyResult', $Dailyresult);
         //获取项目的详细信息
         $thingM = new \app\index\model\Thing();

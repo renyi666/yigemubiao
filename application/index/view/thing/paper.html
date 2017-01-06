@@ -54,8 +54,8 @@
 						<div class="thing_select">
 							<select class="select_user">
 								<option value="0">全部</option>
-								{volist name="dailypaper" id="dap"}
-								<option value="{$dap.user_id}"{if condition="$select_userID eq $dap.user_id"}selected{/if}>{$dap.user_name}</option>
+								{volist name="userResult" id="UserResult"}
+								<option value="{$UserResult.user_id}"{if condition="$select_userID eq $UserResult.user_id"}selected{/if}>{$UserResult.user_name}</option>
 
 								{/volist}
 							</select>
@@ -184,6 +184,10 @@ $('document').ready(function(){
 			var time2=year2+"-"+month2;
 			var url=window.location.href;
 
+			if(url.substr(url.length-1,1)=="l"){
+
+				url=url.substr(0,url.length-5);
+			}
 			url=url+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
 			window.location.href=url;
 

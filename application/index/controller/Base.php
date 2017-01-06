@@ -26,6 +26,7 @@ namespace app\index\controller;
 
 use app\index\model\Group;
 use app\index\model\GroupMember;
+use app\index\model\Member;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -222,6 +223,23 @@ class Base extends Controller
             }
 
             $this->assign('groupInfo', $groupInfo['0']);
+            unset($where);
+            $where['group_id']  =   input('group_id');
+
+            $memberM  = new  Member();
+            $groupMemberM  = new  GroupMember();
+
+            $groupUserResult=$groupMemberM->getUser($where);
+            foreach ($groupUserResult as $key =>$value){
+                $where1['id']   =   $value['user_id'];
+                $memberResult=$memberM->getUser($where1);
+                $UserResult[$key]['user_id']    =   $memberResult['id'];
+                $UserResult[$key]['user_name']  =   $memberResult['nickname'];
+
+            }
+
+            $this->assign('userResult',$UserResult);
+
         }
 
     }
