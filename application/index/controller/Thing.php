@@ -24,6 +24,7 @@
 namespace app\index\controller;
 
 
+use app\index\model\Daily;
 use app\index\model\DailyComment;
 use app\index\model\DailyPlan;
 use app\index\model\Group;
@@ -233,6 +234,7 @@ class Thing extends Base
         $memberM = new Member();
         $thingM = new  \app\index\model\Thing();
         $thingLogM = new ThingLog();
+        $dailyCommentM  = new  DailyComment();
         //获取小组信息
         $list['id'] = input('group_id');
         $groupInfo = $this->getGroupInfo($list);
@@ -255,6 +257,8 @@ class Thing extends Base
 
             $result['condition'] = 0;
         }
+
+
         $this->assign('result', $result);
 
         //事件更新记录
@@ -262,8 +266,21 @@ class Thing extends Base
         $log_result = $thingLogM->getByThingId($parm_log);
         foreach ($log_result as $k => $v) {
             $where['id'] = $v['user_id'];
+
             $log_result_member = $memberM->getUser($where);
             $log_result[$k]['user_name'] = $log_result_member['nickname'];
+
+            $where_comment['thinglog_id']   =   $v['id'];
+            $dailyCommentaResult    =$dailyCommentM->getAllByDailyPlanId($where_comment);
+            $log_result[$k]['comment_number']   =   count($dailyCommentaResult);
+            $log_result[$k]['comment_count']    =0;
+            foreach($dailyCommentaResult as $key =>$value){
+
+                if($value['type']==1){
+
+                    $log_result[$k]['comment_count']+=1;
+                }
+            }
 
         }
         $this->assign('log_result', $log_result);
@@ -316,46 +333,148 @@ class Thing extends Base
 
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
+        $dailyM   =  new  Daily();
+        $memberM = new  Member();
+        //判断是否接收到user_id的参数值
+        $receive['user_id'] =   input('user_id');
+
+        //接收时间参数
+        $receive['time1']   =input('time1');
+        $receive['time2']   =   input('time2');
+
+
+
+
+        //假如时间筛选条件存在
+        if(isset($receive['time1'])&&isset($receive['time2'])){
+
+            $receive['time1']   =   strtotime($receive['time1']);
+            $receive['time2']   =   strtotime($receive['time2']);
+
+
+
+
+        }
+
+
+
+
         $where['thing_id'] = input('thing_id');
-        $dailyPlanM =   new  DailyPlan();
-        $result =    $dailyPlanM->getWorkByDailyId($where);
-        $this->assign('result',$result);
+        if (!isset($where['thing_id']) || $where['thing_id'] == null || $where['thing_id'] == "") {
+
+            $this->redirect('Baocuo/index');
+        }
+
+        $this->assign('ThingId', $where['thing_id']);
+        //获取日报和项目的关联结果
+        $dailyPlanM = new  DailyPlan();
+
+        $Dailyresult = $dailyPlanM->getWorkByDailyId($where);
+        //查找成员信息
+        foreach ($Dailyresult as $key =>$value){
+
+            $dailyWhere['id']   =   $value['daily_id'];
+            $dailyResult=$dailyM->getOne($dailyWhere);
+            $DailyPaper[$key]['user_id']= $memberWhere['id']=$Dailyresult[$key]['user_id']    =  $dailyResult['user_id'];
+           $Dailyresult[$key]['group_id']    =  $dailyResult['user_id'];
+            $DailyPaper[$key]['user_name']=  $Dailyresult[$key]['user_name'] =   $memberM->getNameById($memberWhere);
+
+
+            //如果接受的user_id不是数字说明不用筛选 否则要选择相等的user_id
+            if(is_numeric($receive['user_id'])&&$receive['user_id']!=0){
+
+            if($Dailyresult[$key]['user_id']!=$receive['user_id']){
+
+
+                unset($Dailyresult[$key]);
+            }
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+       ;
+        if(isset($receive['time1'])&&isset($receive['time2'])){
+
+            foreach ($Dailyresult as $k=>$v){
+                if($v['create_time']<$receive['time1']||$v['create_time']>$receive['time2']){
+
+                    unset($Dailyresult[$k]);
+                }
+
+            }
+
+        }
+
+        //把选择组员的id传到模板
+        if(is_numeric($receive['user_id'])&&$receive['user_id']!=0){
+          $this->assign('select_userID',$receive['user_id']);
+        }else{
+
+            $receive['user_id']=0;
+            $this->assign('select_userID',$receive['user_id']);
+        }
+
+
+        $this->assign('dailypaper',$DailyPaper);
+        $this->assign('dailyResult', $Dailyresult);
+        //获取项目的详细信息
+        $thingM = new \app\index\model\Thing();
+        unset($where);
+        $where['id'] = input('thing_id');
+        $thingResult = $thingM->getByID($where);
+        //获取用户的信息
+        $where['id'] = array('in', $thingResult['user_id']);
+        $result = $memberM->getUser($where);
+        $thingResult['user_name'] = $result['nickname'];
+
+
+        $this->assign('thingResult', $thingResult);
         return $this->fetch();
     }
 
     /**添加评论页面
      *
      */
-    public function comment(){
+    public function comment()
+    {
 
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
-        $thingLog['id'] =   input('thing_log_id');
-        $thinglogM  =new ThingLog();
-        $dailyCommentM  =new DailyComment();
-        $thingLogResult =   $thinglogM->getByThingId($thingLog);
-        if($thingLogResult==null||$thingLogResult==""){
+        $thingLog['id'] = input('thing_log_id');
+        $thinglogM = new ThingLog();
+        $dailyCommentM = new DailyComment();
+        $thingLogResult = $thinglogM->getByThingId($thingLog);
+        if ($thingLogResult == null || $thingLogResult == "") {
 
             $this->redirect('Baocuo/index');
         }
-        $dailyCommentWhere['thinglog_id']  =   input('thing_log_id');
+        $dailyCommentWhere['thinglog_id'] = input('thing_log_id');
 
-        $dailyCommentResult =   $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
+        $dailyCommentResult = $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
         //统计出有几条评论，几个差评
-        $commentData['number']  =   count($dailyCommentResult);//总共有几个评论
-        $count=0;
+        $commentData['number'] = count($dailyCommentResult);//总共有几个评论
+        $count = 0;
 
-        for($i=0;$i<$commentData['number'];$i++){
+        for ($i = 0; $i < $commentData['number']; $i++) {
 
-            if($dailyCommentResult[$i]['type']==1){
+            if ($dailyCommentResult[$i]['type'] == 1) {
 
-                $count+=1;
+                $count += 1;
             }
         }
-        $commentData['count']   =$count;
-        $this->assign('commentData',$commentData);//评论的数目和差评的数目
-        $this->assign('dailyCommentResult',$dailyCommentResult);
-        $this->assign('thingLogResult',$thingLogResult['0']);
+        $commentData['count'] = $count;
+        $this->assign('commentData', $commentData);//评论的数目和差评的数目
+        $this->assign('dailyCommentResult', $dailyCommentResult);
+        $this->assign('thingLogResult', $thingLogResult['0']);
 
         return $this->fetch();
 

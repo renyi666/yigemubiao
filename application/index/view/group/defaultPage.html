@@ -24,7 +24,7 @@
 			</div>
 			<div class="one_nav_m">
 				<a href="one_ target.html">一个目标</a>
-				<a href="daily_paper.html">日报</a>
+				<a href="{:url('Daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('Thing/index',array('group_id'=>$group_result.id))}">事</a>
 				<a href="#" class="active">人</a>
 				{if condition="$position_result.position eq 1"}

@@ -124,13 +124,6 @@ class Daily extends Base
             }
         }
 
-
-
-
-
-
-
-
         $this->assign('dailyResult', $dailyResult);
 
         $groupInfo = $this->getGroupInfo($parm1);
@@ -150,8 +143,6 @@ class Daily extends Base
             $parm2['id'] = $value['user_id'];
             $result = $memberM->getUser($parm2);
             $groupUserInfo[$key]['user_name'] = $result['nickname'];
-
-
         }
 
 

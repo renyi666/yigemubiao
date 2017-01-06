@@ -98,4 +98,12 @@ class Member extends Model
       return $this->where($parm)->select();
     }
 
+    /**返回用户的名字
+     * @param $parm
+     * @return mixed
+     */
+    public  function getNameById($parm){
+
+        return $this->where($parm)->value('nickname');
+    }
 }

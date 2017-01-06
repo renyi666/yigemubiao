@@ -65,6 +65,7 @@ class DailyPlan extends Model
     public function getWorkByDailyId($parm)
     {
         $dailyComment = new DailyComment();
+
         $parm['type'] = 2;
         $result =$this->where($parm)->order('sort desc')->select();
 
@@ -82,6 +83,8 @@ class DailyPlan extends Model
                     $result[$key]['comment_count']+=1;
                 }
             }
+
+
 
         }
         return $result;

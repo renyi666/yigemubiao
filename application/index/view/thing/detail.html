@@ -16,7 +16,7 @@
 		<div class="one_nav">
 			<div class="one_nav_l">
 				<h2>
-					<a href="choose_group.html">
+					<a href="{:url('Group/index')}">
 						{$groupInfo.name}
 						<input type="hidden" value="{$groupInfo.id}" class="group_id">
 						<img src="__PUBLIC__/images/one.png"/>
@@ -76,7 +76,7 @@
 									<p>
 										{$log_res.content}
 									</p>
-									<a href="{:url('thing/comment',array('group_id'=>$groupInfo['id'],'thing_log_id'=>$log_res['id']))}"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+									<a href="{:url('thing/comment',array('group_id'=>$groupInfo['id'],'thing_log_id'=>$log_res['id']))}"><h3>评论{$log_res.comment_number}条&nbsp;&nbsp;差评{$log_res.comment_count}条</h3></a>
 								</li>
 								{/volist}
 								<!--<li>-->

@@ -16,8 +16,9 @@
 		<div class="one_nav">
 			<div class="one_nav_l">
 				<h2>
-					<a href="choose_group.html">
-						小组的名字小组的
+					<a href="{:url('Group/index')}">
+						{$groupInfo.name}
+
 						<img src="__PUBLIC__/images/one.png"/>
 					</a>
 				</h2>
@@ -37,37 +38,37 @@
 		</div>
 		<div class="one_info">
 			<div class="one_info_top thing_message_head">
-				<span>事件的名字事件的名字</span> 
-				<span>&nbsp;-&nbsp;郭贺（创建者的名字）</span>
-				<a href="add_thing.html" class="compile_thing">编辑</a>
+				<span>{$thingResult.name}</span>
+				<span>&nbsp;-&nbsp;{$thingResult.user_name}</span>
+				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$thingResult['id']))}" class="compile_thing">编辑</a>
 			</div>
 			<div class="thing_message">
 				<div class="thing_top" style="border:none;padding-bottom:0;">
 					<div class="thing_top_item">
-						<a href="thing_message.html">描述</a>
+						<a href="{:url('detail',array('thing_id'=>$ThingId,'group_id'=>$groupInfo['id']))}">描述</a>
 						<a href="thing_daily_paper.html" class="active">日报</a>
+						<input type="hidden" class="thingID" value="{$ThingId}">
+						<input type="hidden" class="groupID" value="{$groupInfo.id}">
 					</div>
 					<div class="thing_bottom">
 						<div class="thing_select">
-							<select>
-								<option>全部</option>
-								<option>郭贺</option>
-								<option>李冰</option>
-								<option>郭贺</option>
-								<option>李冰</option>
-								<option>郭贺</option>
-								<option>李冰</option>
+							<select class="select_user">
+								<option value="0">全部</option>
+								{volist name="dailypaper" id="dap"}
+								<option value="{$dap.user_id}"{if condition="$select_userID eq $dap.user_id"}selected{/if}>{$dap.user_name}</option>
+
+								{/volist}
 							</select>
 						</div>
 						<div class="thing_seek">
 							 <form name="form1" method="post" action="">
-				                <select name="year" style="width: 50px;margin-right: 5px;"></select>年
-				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"></select>月
+				                <select name="year" style="width: 50px;margin-right: 5px;" class="year1"></select>年
+				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;" class="month1"></select>月
 				                <span>——</span>
-				                <select name="year" style="width: 50px;margin-right: 5px;"></select>年
-				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"></select>月
+				                <select name="year" style="width: 50px;margin-right: 5px;"class="year2"></select>年
+				                <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"class="month2"></select>月
 				            </form>
-				            <button type="button">查询</button>
+				            <button type="button" class="chaxun">查询</button>
 						</div>
 					</div>
 				</div>
@@ -75,30 +76,30 @@
 					<div class="nim_comment">
 						<div class="nimc_top comment_list nimc_bottom">
 							<ul>
+								{volist name="dailyResult" id="dares"}
 								<li>
 									<h4>
-										<span>郭贺</span>
-										2016年3月1日 12:00
+										<span>{$dares.user_name}</span>
+										{:date('Y年m月d日 H:i',$dares.create_time)}
 									</h4>
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
-			viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-			 Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
+										{$dares.content}
 									</p>
-									<a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
+									<a href="{:url('daily/comment',array('dailyplanid'=>$dares['id'],'group_id'=>$groupInfo['id']))}"><h3>评论{$dares.comment_number}条&nbsp;&nbsp;差评{$dares.comment_count}条</h3></a>
 								</li>
-								<li>
-									<h4>
-										<span>李冰</span>
-										2016年3月1日 12:00
-									</h4>
-									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et 
-			viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-			 Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-									</p>
-									<a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>
-								</li>
+								{/volist}
+								<!--<li>-->
+									<!--<h4>-->
+										<!--<span>李冰</span>-->
+										<!--2016年3月1日 12:00-->
+									<!--</h4>-->
+									<!--<p>-->
+										<!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et -->
+			<!--viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.-->
+			 <!--Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.-->
+									<!--</p>-->
+									<!--<a href="comment.html"><h3>评论0条&nbsp;&nbsp;差评0条</h3></a>-->
+								<!--</li>-->
 							</ul>
 						</div>
 					</div>
@@ -110,6 +111,7 @@
 
 <script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -159,6 +161,33 @@ $('document').ready(function(){
 		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
 		    $(this).text(mphone)
 	    });
+		$('.select_user').change(function () {
+
+			var thingID	=	$('.thingID').val();
+			var  groupID	=$('.groupID').val();
+			var user_id		=$('.select_user').val();
+			var url ="{:url('thing/paper')}";
+			url=url.substr(0,url.length-5);
+			url=url+"/thing_id/"+thingID+"/group_id/"+groupID+"/user_id/"+user_id;
+			window.location.href=url;
+
+		})
+		$('.chaxun').click(function () {
+			var year1=$('.year1').val();
+			var year2=$('.year2').val();
+
+			var month1=$('.month1').val();
+			var month2=$('.month2').val();
+
+			var date = new Date(2013,09,30);
+			var time1=year1+"-"+month1;
+			var time2=year2+"-"+month2;
+			var url=window.location.href;
+
+			url=url+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
+			window.location.href=url;
+
+		})
 	    
 	});
 </script>

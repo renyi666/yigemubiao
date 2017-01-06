@@ -67,5 +67,13 @@ class Daily extends  Model
         return $this->where($parm)->select();
     }
 
+    /**查找单条记录,返回user_id
+     * @param $parm
+     * @return array|false|\PDOStatement|string|Model
+     */
+    public   function getOne($parm){
+
+        return $this->where($parm)->find();
+    }
 
 }
