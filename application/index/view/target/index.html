@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>一个目标</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+</head>
+<body>
+	
+
+<div class="container-fluid">
+	<div class="one_container">
+		<div class="one_nav">
+			<div class="one_nav_l">
+				<h2>
+					<a href="choose_group.html">
+						{$groupInfo.name}
+
+						<img src="__PUBLIC__/images/one.png"/>
+					</a>
+				</h2>
+			</div>
+			<div class="one_nav_m">
+				<a href="#" class="active">一个目标</a>
+				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
+				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}">事</a>
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
+			</div>
+			<div class="one_nav_r">
+				<span>{$userInfo.nickname}</span>
+				（<i class="phone">{$userInfo.mobile}</i>）
+				<a href="{:url('Member/userData',array('group_id'=>$groupInfo['id']))}"><img src="__PUBLIC__/images/set.png"></a>
+			</div>
+		</div>
+		<div class="one_info">
+			<div class="one_info_top">
+				<form action="" role="form">
+					<div class="oit_l">
+						<select class="user_select">
+							{volist name="groupUserInfo" id="groupUser"}
+
+							<option class="phone2" value="{$groupUser.user_id}"{if condition="$nowUserId eq $groupUser.user_id"}selected{/if}>{$groupUser.user_name}</option>
+
+							{/volist}
+						</select>
+					</div>
+					<div class="oit_m">
+						{volist name="targetMonth" id="targetMonth"}
+						<a href="{:url('target/index',array('group_id'=>$groupInfo['id'],'userId'=>$nowUserId,'target_time'=>$targetMonth['target_time']))}"{if condition="$i eq 3"}class="active"{/if} >{$targetMonth.month}月</a>
+						<!--<a href="">4月</a>-->
+						<!--<a href="" class="active">3月</a>-->
+						<!--<a href="">2月</a>-->
+						<!--<a href="">1月</a>-->
+						{/volist}
+					</div>
+					<div class="oit_r">
+						<select>
+							<option>2016年</option>
+							<option>2017年</option>
+						</select>
+						<select style="margin-left: 15px;">
+							<option>1月</option>
+							<option>2月</option>
+							<option>3月</option>
+							<option>4月</option>
+							<option>5月</option>
+							<option>6月</option>
+							<option>7月</option>
+							<option>8月</option>
+							<option>9月</option>
+							<option>10月</option>
+							<option>11月</option>
+							<option>12月</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			{empty name="tergetResult"}
+				<div class="one_info_mid">
+					<div class="oim_info">
+						<h2>目标名称目标名称目标名称aaaaaa</h2>
+						<p>目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述</p>
+						<figure>
+							<img src="__PUBLIC__/images/5.png">
+						</figure>
+					</div>
+
+				</div>
+				{else/}
+				<div class="one_info_mid">
+					<div class="oim_info">
+						<h2>{$tergetResult.name}</h2>
+						<p>{$tergetResult.content}</p>
+						<figure>
+							<img src="__PUBLIC__/images/5.png">
+						</figure>
+					</div>
+					<h3>
+						<a id="compile">编辑</a>
+						<a href="comment.html">评论{$targetCommentResultNumber.0}条</a>
+						<a href="comment.html">差评{$targetCommentResultNumber.1}条</a>
+					</h3>
+				</div>
+			{/empty}
+
+			<div class="one_info_compile">
+				<form action="">
+					<div class="target_title">
+						<label>目标名称：</label>
+						<input type="text" value="" class="target_input"/>
+					</div>
+					<div class="target_info">
+						<h3>目标描述：</h3>
+						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder=""></textarea>
+					</div>
+					<p class="lg_btn_p fcolor_red" >× 请输入正确的手机号或密码</p>
+					<div class="target_button">
+						<a class="target_button_save">保存</a>
+						<a class="target_button_cancel">取消</a>
+					</div>
+				</form>
+			</div>
+			<div class="one_info_bottom">
+				<pre><h3>目标的smart原则</h3>
+
+1. 具体的（Specific） 
+2. 可衡量的（Measurable） 
+3. 可以达到的（Attainable） 
+4. 和绩效、岗位职责相关（Relevant） 
+5. 明确的截止日期（Time-based）
+</pre>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		window.editor=KindEditor.create('textarea.kindeditor', {
+		    basePath: '__PUBLIC__/kindeditor/',
+		    bodyClass : 'article-content',
+		    resizeType : 1,
+		    allowPreviewEmoticons : false,
+		    allowImageUpload : false,
+		    minHeight:200,
+		    items : [
+		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+		    ]
+		});
+	    $('.phone').each(function(){
+		    var phone = $(this).text();
+		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+		    $(this).text(mphone)
+	    });
+//	     $('.phone2').each(function(){
+//		    var phone = $(this).text();
+//		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+//		    $(this).text('张三'+'（'+mphone+'）')
+//	    });
+	    $("#compile").click(function(){
+	    	$(".one_info_compile").show();
+	    	$(".one_info_mid").hide();
+	    });
+	    $(".target_button_cancel").click(function(){
+	    	$(".one_info_compile").hide();
+	    	$(".one_info_mid").show();
+	    });
+	    $(".target_button_save").click(function(){
+	    	var userName		=	$(".target_input").val();
+			/******判断目标是否为空*******/
+			if(userName==''||userName==null||userName==undefined){
+	    		$(".fcolor_red").show()
+	    						  .text('× 目标名称不可为空！')
+	    						  .css('text-align','left')
+	    						  .css('margin-top','15px');
+	    		return;				  
+	   		 }else{
+	   		 	var content 	=editor.html();
+				console.log(content);
+				console.log(userName);
+
+
+			}
+	    });
+	});
+</script>
+</body>
+</html>

@@ -124,6 +124,22 @@ class Daily extends Base
             }
         }
 
+
+        if(input('time1')!=null&&input('time2')!=null){
+            unset($receiveData);
+            $receiveData['time1']   =   strtotime(input('time1'));
+            $receiveData['time2']   = strtotime(input('time2')."-30");
+
+            foreach ($dailyResult as $k=>$v){
+
+                if($v['create_time']>$receiveData['time2']||$v['create_time']<$receiveData['time1']){
+
+                    unset($dailyResult[$k]);
+                }
+            }
+
+        }
+
         $this->assign('dailyResult', $dailyResult);
 
         $groupInfo = $this->getGroupInfo($parm1);

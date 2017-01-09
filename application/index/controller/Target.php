@@ -1,0 +1,128 @@
+<?php
+/***
+ *
+ *                        ,%%%%%%%%,
+ *                      ,%%/\%%%%/\%%
+ *                     ,%%%\c "" J/%%%
+ *            %.       %%%%/ o  o \%%%
+ *            `%%.     %%%%    _  |%%%
+ *             `%%     `%%%%(__Y__)%%'
+ *             //       ;%%%%`\-/%%%'
+ *            ((       /  `%%%%%%%'
+ *             \\    .'          |
+ *              \\  /       \  | |
+ *               \\/         ) | |
+ *                \         /_ | |__
+ *                (___________))))))) 攻城狮
+ *
+ * @author：gaoyuan
+ * @created_time：2017/1/9 10:42
+ * When I wrote this, only God and I understood what I was doing
+ * Now, God only knows
+ */
+
+namespace app\index\controller;
+
+
+use app\index\model\DailyComment;
+use app\index\model\GroupMember;
+use app\index\model\Member;
+
+class Target extends Base
+{
+
+
+    public function index()
+    {
+        $userInfo = session('userInfo');
+        $this->assign('userInfo', $userInfo);
+        $targetM = new  \app\index\model\Target();
+        $dailyCommentM = new  DailyComment();
+        $groupmmeberM = new   GroupMember();
+        $memberM = new Member();
+
+        $targetWhere['group_id'] = $parm['group_id'] = input('group_id');
+        $parm['status'] = 1;
+        $groupUserInfo = $groupmmeberM->getUser($parm);
+        //获取小组内成员信息
+        foreach ($groupUserInfo as $key => $value) {
+
+            $parm2['id'] = $value['user_id'];
+            $result = $memberM->getUser($parm2);
+            $groupUserInfo[$key]['user_name'] = $result['nickname'];
+        }
+
+
+        //获得传递过来的用户id
+        $receiveData['userId'] = input('userId');
+        if (isset($receiveData['userId']) && $receiveData['userId'] != null && $receiveData['userId'] != "") {
+            $targetWhere['user_id'] = $receiveData['userId'];
+
+        } else {
+
+            $targetWhere['user_id'] = $userInfo['id'];
+        }
+        //获得传递过来的月份
+        $receiveData['target_time'] = input('target_time');
+        if(isset($receiveData['target_time'])&&$receiveData['target_time']!=null){
+            $targetWhere['target_time'] = $receiveData['target_time'];
+
+
+        }else{
+            $targetWhere['target_time'] =strtotime(date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), 1, date("Y"))));
+
+        }
+
+        $targetResult=   $targetM->getOne($targetWhere);
+        $this->assign('tergetResult',$targetResult);
+
+
+
+        //根据目标获得相应的评论数目
+        $dailyCommentWhere['target_id'] = $targetResult['id'];
+        $targetCommentResult = $dailyCommentM->getAllByDailyPlanId($dailyCommentWhere);
+
+
+        //判断差评有几条
+        if($targetCommentResult!=null){
+            foreach ($targetCommentResult as $k1 =>$v1){
+                $targetCommentResultNumber['1'] =   0;
+                if($v1['type']==1){
+                    $targetCommentResultNumber['1'] +=1;
+                }
+            }
+            //总共有几条差评
+            $targetCommentResultNumber['0'] =count($targetCommentResult) ;
+        }else{
+
+            $targetCommentResultNumber['1'] =   0;
+            $targetCommentResultNumber['0']=0;
+
+        }
+
+
+        $this->assign('targetCommentResultNumber',$targetCommentResultNumber);
+        $this->assign('nowUserId', $targetWhere['user_id']);
+        $this->assign('groupUserInfo', $groupUserInfo);
+
+        //获取前后四个月的时间
+        $targetMonth['0']['month1'] = $beforeLastMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m") - 2, 1, date("Y")));
+        $targetMonth['1']['month1'] = $lastMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m") - 1, 1, date("Y")));
+
+        $targetMonth['2']['month1'] = $nowMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), 1, date("Y")));
+        $targetMonth['3']['month1'] = $nextMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m") + 1, 1, date("Y")));
+        $targetMonth['4']['month1'] = $afterNextMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m") + 2, 1, date("Y")));
+        foreach ($targetMonth as $k => $v) {
+            $targetMonth[$k]['month'] = substr($v['month1'], 5, 2) * 1;//乘1可以去除前边的零
+            $targetMonth[$k]['target_time'] = strtotime($v['month1']);
+        }
+
+
+       $this->assign('targetMonth',$targetMonth);
+
+
+
+        return $this->fetch();
+    }
+
+}

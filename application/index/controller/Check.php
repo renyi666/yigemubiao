@@ -32,6 +32,8 @@ class Check extends Base
 
     public function index()
     {
+
+
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
         $dailyCommentM = new DailyComment();

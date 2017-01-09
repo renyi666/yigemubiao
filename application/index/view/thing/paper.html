@@ -24,7 +24,7 @@
 				</h2>
 			</div>
 			<div class="one_nav_m">
-				<a href="one_target.html">一个目标</a>
+				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}" class="active">项目</a>
 				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
@@ -46,7 +46,7 @@
 				<div class="thing_top" style="border:none;padding-bottom:0;">
 					<div class="thing_top_item">
 						<a href="{:url('detail',array('thing_id'=>$ThingId,'group_id'=>$groupInfo['id']))}">描述</a>
-						<a href="thing_daily_paper.html" class="active">日报</a>
+						<a href="#" class="active">日报</a>
 						<input type="hidden" class="thingID" value="{$ThingId}">
 						<input type="hidden" class="groupID" value="{$groupInfo.id}">
 					</div>
@@ -182,13 +182,14 @@ $('document').ready(function(){
 			var date = new Date(2013,09,30);
 			var time1=year1+"-"+month1;
 			var time2=year2+"-"+month2;
-			var url=window.location.href;
+			var thingID	=	$('.thingID').val();
+			var  groupID	=$('.groupID').val();
+			var user_id		=$('.select_user').val();
+			var url="{:url('thing/paper')}";
+			url=url.substr(0,url.length-5);
+			url=url+"/thing_id/"+thingID+"/group_id/"+groupID+"/user_id/"+user_id+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
+			console.log(url)
 
-			if(url.substr(url.length-1,1)=="l"){
-
-				url=url.substr(0,url.length-5);
-			}
-			url=url+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
 			window.location.href=url;
 
 		})

@@ -23,7 +23,7 @@
                 </h2>
             </div>
             <div class="one_nav_m">
-                <a href="" >一个目标</a>
+                <a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}" >一个目标</a>
                 <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}"class="active">日报</a>
                 <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
                 <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
@@ -32,7 +32,7 @@
             <div class="one_nav_r">
                 <span>{$userInfo.nickname}</span>
                 （<i class="phone">{$userInfo.mobile}</i>）
-                <a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+                <a href="{:url('Member/userData',array('group_id'=>$groupInfo['id']))}"><img src="__PUBLIC__/images/set.png"></a>
             </div>
         </div>
         <div class="one_info">

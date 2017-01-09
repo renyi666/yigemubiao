@@ -67,13 +67,13 @@ class DailyComment extends  Model
         return $this->update($parm);
     }
 
-    /**全部修改
+    /**全部通过或者是不通过
      * @param $parm
      * @return int|string
      */
     public  function allEdit($parm){
 
-    $where['status']    =   1;
+        $where['status']    =   1;
         return $this->where($parm)->update($where);
 
     }

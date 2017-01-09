@@ -23,7 +23,7 @@
                 </h2>
             </div>
             <div class="one_nav_m">
-                <a href="one_target.html">一个目标</a>
+                <a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
                 <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
                 <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
                 <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
@@ -32,7 +32,7 @@
             <div class="one_nav_r">
                 <span>{$userInfo.nickname}</span>
                 （<i class="phone">{$userInfo.mobile}</i>）
-                <a href="set.html"><img src="__PUBLIC__/images/set.png"></a>
+                <a href="{:url('Member/userData',array('group_id'=>$groupInfo['id']))}"><img src="__PUBLIC__/images/set.png"></a>
             </div>
         </div>
         <div class="one_info">
@@ -290,8 +290,7 @@
         $('.groupuser').change(function () {
             var group_id = $('.group_id').val();
             var userId1  =   $('.groupuser').val();
-        console.log(group_id);
-            console.log(userId1)
+
 
             var url =   "{:url('Daily/index')}"
             url	=	url.substr(0,(url.length-5));
@@ -323,28 +322,22 @@
                     }
             )
         })
-//        $.('.time1').change(function(){
-//            var time1= $('.time1').val();
-////            $('.time2').change(function () {
-////
-////                var time2=$('.time2').val();
-////                var url=window.location.href;
-////
-////            })
-//
-//        })
+
         $('.time1').change(function () {
 
             var time1=$('.time1').val();
             $('.time2').change(function () {
                 var time2=$('.time2').val();
-                var url=window.location.href;
+                var url="{:url('daily/index')}";
+                var group_id = $('.group_id').val();
+               url=url.substr(0,url.length-5);
 
-                if(url.substr(url.length-1,1)=="l"){
-
-                    url=url.substr(0,url.length-5);
-                }
-
+                time1=time1.replace("年","-");
+                time1=time1.substr(0,time1.length-1);
+                time2=time2.replace("年","-");
+                time2=time2.substr(0,time2.length-1);
+                url=url+"/group_id/"+group_id+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
+                window.location.href=url;
 
 
             })
