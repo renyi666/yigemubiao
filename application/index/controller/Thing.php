@@ -348,13 +348,14 @@ class Thing extends Base
         //假如时间筛选条件存在
         if(isset($receive['time1'])&&isset($receive['time2'])){
 
-            $receive['time1']   =   strtotime($receive['time1']);
-            $receive['time2']   =   strtotime($receive['time2']);
+            $receive['time1']   =   strtotime($receive['time1']);//从月份的第一天开始
+            $receive['time2']   =  strtotime(date('Y-m-d', strtotime(date('Y-m-01', strtotime($receive['time2'])) . ' +1 month -1 day')));//截止到月份的最后一天
 
 
 
 
         }
+
 
 
 
@@ -403,6 +404,8 @@ class Thing extends Base
 
 
        ;
+
+
         if(isset($receive['time1'])&&isset($receive['time2'])){
 
             foreach ($Dailyresult as $k=>$v){

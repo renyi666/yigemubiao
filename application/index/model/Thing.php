@@ -39,7 +39,10 @@ class Thing extends  Model
         $thingColectionM    =   new ThingCollection();
         $collection['group_id'] =   $parm['group_id'];
         $collection['user_id']  =   session('uid');
-        $collection_result  =   $thingColectionM->save($collection);
+        if($parm['user_id']==$collection['user_id']){
+            $collection_result  =   $thingColectionM->save($collection);
+
+        }
 
 
 
@@ -73,6 +76,7 @@ class Thing extends  Model
             ->where("t.group_id=".$parm['group_id'])
             ->where($where)
             ->where('g.status=1')
+                ->order('t.create_time desc')
             ->field('t.id,t.name,t.user_id,t.group_id,m.nickname')
 
             ->join('member m', 'm.id=t.user_id')
@@ -89,6 +93,7 @@ class Thing extends  Model
             ->where("t.group_id=".$parm['group_id'])
             ->where($where)
             ->where('g.status=1')
+            ->order('t.create_time desc')
             ->field('t.id,t.name,t.user_id,t.group_id,m.nickname')
             ->join('member m', 'm.id=t.user_id')
             ->join('group_member g','g.user_id=m.id')

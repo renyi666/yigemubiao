@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/jquery.multiselect.css">
+	<link rel="stylesheet" href="__PUBLIC__/css/multi-select.css">
 
 	<!-- Latest compiled and minified CSS -->
 
@@ -59,7 +61,7 @@
 					<div class="add_thing_item">
 						<span>责任人：</span>
 						<!--<select class="charge_user selectpicker"  >-->
-						<select id="example-multiple-selected" multiple="multiple" >
+						<select id="my-select1"  class="charge_user" name="my-select[]">
 
 						{volist name="member_result" id="mem"}
 							<option value="{$mem.id}" {if condition="$userInfo.id eq $mem.id"} selceted{/if}>{$mem.nickname}</option>
@@ -67,6 +69,14 @@
 						</select>
 
 					</div>
+					<!--<select multiple="multiple" id="my-select" name="my-select[]">-->
+						<!--<option value='elem_1'>elem 1</option>-->
+						<!--<option value='elem_2'>elem 2</option>-->
+						<!--<option value='elem_3'>elem 3</option>-->
+						<!--<option value='elem_4'>elem 4</option>-->
+
+						<!--<option value='elem_100'>elem 100</option>-->
+					<!--</select>-->
 					<p class="lg_btn_p fcolor_red" >× 事不可为空</p>
 					<div class="add_thing_item">
 						<span></span>
@@ -96,14 +106,18 @@
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
 <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-multiselect.css">
+<link rel="stylesheet" href="__PUBLIC__/js/jquery.multiselect.js">
+<link rel="stylesheet" href="__PUBLIC__/js/jquery-ui.min.js">
+<link rel="stylesheet" href="__PUBLIC__/js/jquery.multi-select.js">
 
 <script>
 
 
 	$(function() {
-		$('#example-multiple-started').multiselect();
-		KindEditor.create('textarea.kindeditor', {
-		    basePath: 'kindeditor/',
+//		$('#my-select').multiSelect()
+//		$('#my-select1').multiSelect()
+		window.editor=KindEditor.create('textarea.kindeditor', {
+		    basePath: '__PUBLIC__/kindeditor/',
 		    bodyClass : 'article-content',
 		    resizeType : 1,
 		    allowPreviewEmoticons : false,

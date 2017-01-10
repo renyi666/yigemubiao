@@ -26,7 +26,7 @@
 			<div class="one_nav_m">
 				<a href="#" class="active">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
-				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}">项目</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
 				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 			</div>
@@ -94,14 +94,15 @@
 				<div class="one_info_mid">
 					<div class="oim_info">
 						<h2>{empty name="$tergetResult.name"}
-						模板名称{else/}{$tergetResult.name}{/empty}</h2>
-						<p>{empty name="$tergetResult.content"}模板内容{else/}{$tergetResult.content}{/empty}</p>
+						默认模板名称{else/}{$tergetResult.name}{/empty}</h2>
+						<p>{empty name="$tergetResult.content"}默认模板内容{else/}{$tergetResult.content}{/empty}</p>
 						<figure>
-							<img src="__PUBLIC__/images/5.png">
+							<!--<img src="__PUBLIC__/images/5.png">-->
 						</figure>
 					</div>
 					<h3>
-						<a id="compile" data-id="{$tergetResult.id}" data-name="{$tergetResult.name}" data-content="{$tergetResult.content}">编辑</a>
+						{if condition="$tergetResult.bianji eq 1"}
+						<a id="compile" data-id="{$tergetResult.id}" data-name="{$tergetResult.name}" data-content="{$tergetResult.content}">编辑</a>{/if}
 						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">评论{$targetCommentResultNumber.0}条</a>
 						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">差评{$targetCommentResultNumber.1}条</a>
 					</h3>
