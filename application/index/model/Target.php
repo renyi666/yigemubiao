@@ -36,4 +36,16 @@ class Target extends  Model
     }
 
 
+    public  function addTarget($parm){
+
+
+        $this->save($parm);
+        return  $this->getLastInsID();
+    }
+
+    public  function editTarget($parm){
+
+
+        return $this->update($parm);
+    }
 }

@@ -27,6 +27,7 @@ namespace app\index\controller;
 use app\index\model\DailyComment;
 use app\index\model\GroupMember;
 use app\index\model\Member;
+use think\Request;
 
 class Target extends Base
 {
@@ -72,7 +73,20 @@ class Target extends Base
             $targetWhere['target_time'] =strtotime(date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), 1, date("Y"))));
 
         }
+        //查询一个目标结果
+        $targetResult=   $targetM->getOne($targetWhere);
 
+        //如果为空，就自动添加一个,吧添加后的id赋值到模板
+        if($targetResult==null){
+
+            $targetId   =   $targetM->addTarget($targetWhere);
+
+        }else{
+            $targetId   =$targetResult['id'];
+        }
+        $this->assign('targetId',$targetId);
+
+        //查询一个目标结果,在查询一次
         $targetResult=   $targetM->getOne($targetWhere);
         $this->assign('tergetResult',$targetResult);
 
@@ -121,6 +135,58 @@ class Target extends Base
        $this->assign('targetMonth',$targetMonth);
 
 
+
+        return $this->fetch();
+    }
+
+    public  function editTarget(){
+
+        $request   =  Request::instance();
+        $list   =  $request->param();
+
+        $targetM   = new    \app\index\model\Target();
+        $result = $targetM->editTarget($list);
+
+        return $result;
+
+
+    }
+    public  function comment(){
+        $userInfo = session('userInfo');
+        $this->assign('userInfo', $userInfo);
+        $targetWhere['group_id']    =   input('group_id');
+        $targetWhere['target_id']   =   input('target_id');
+        $this->assign('targetWhere',$targetWhere);
+        if($targetWhere['target_id']==null||!isset($targetWhere['target_id'])){
+
+
+            $this->redirect('Baocuo/index');
+        }
+
+
+        $dailyCommentM  =  new DailyComment();
+
+        $dailyCommentResult = $dailyCommentM->getAllByDailyPlanId($targetWhere);
+
+        $dailyCommentNumber['0']    =   0;
+        $dailyCommentNumber['1']    =   0;
+        if($dailyCommentResult!=null){
+
+
+            foreach ($dailyCommentResult as $key =>$value){
+
+                if($value['type']==1){
+
+                    $dailyCommentNumber['1']+=1;
+
+                }
+
+            }
+            $dailyCommentNumber['0']    =   count($dailyCommentResult);
+        }
+
+        $this->assign('dailyCommentNumber',$dailyCommentNumber);
+        $this->assign('dailyCommentResult',$dailyCommentResult);
 
         return $this->fetch();
     }
