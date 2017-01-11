@@ -27,7 +27,9 @@
                 <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
                 <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
                 <a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+                {if condition="$Think.session.position_result eq 1"}
                 <a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
+                {/if}
             </div>
             <div class="one_nav_r">
                 <span>{$userInfo.nickname}</span>
@@ -48,36 +50,37 @@
                         </select>
                     </div>
                     <div class="daily_paper_year">
+
                         <select style="margin-right:10px;" class="time1">
-                            <option value="2016年12月">2016年12月</option>
-                            <option value="2017年1月">2017年1月</option>
-                            <option value="2017年2月">2017年2月</option>
-                            <option value="2017年3月">2017年3月</option>
-                            <option value="2017年4月">2017年4月</option>
-                            <option value="2017年5月">2017年5月</option>
-                            <option value="2017年6月">2017年6月</option>
-                            <option value="2017年7月">2017年7月</option>
-                            <option value="2017年8月">2017年8月</option>
-                            <option value="2017年9月">2017年9月</option>
-                            <option value="2017年10月">2017年10月</option>
-                            <option value="2017年11月">2017年11月</option>
-                            <option value="2017年12月">2017年12月</option>
+                            <option value="2016-12"{if condition="$ReceiveData.time1 eq  '2016-12'"}selected{/if}>2016年12月</option>
+                            <option value="2017-1"{if condition="$ReceiveData.time1 eq  '2017-1'"}selected{/if}>2017年1月</option>
+                            <option value="2017-2"{if condition="$ReceiveData.time1 eq  '2017-2'"}selected{/if}>2017年2月</option>
+                            <option value="2017-3"{if condition="$ReceiveData.time1 eq  '2017-32'"}aaaaa{/if}>2017年3月</option>
+                            <option value="2017-4"{if condition="$ReceiveData.time1 eq  '2017-4'"}selected{/if}>2017年4月</option>
+                            <option value="2017-5"{if condition="$ReceiveData.time1 eq  '2017-5'"}selected{/if}>2017年5月</option>
+                            <option value="2017-6"{if condition="$ReceiveData.time1 eq  '2017-6'"}selected{/if}>2017年6月</option>
+                            <option value="2017-7"{if condition="$ReceiveData.time1 eq  '2017-7'"}selected{/if}>2017年7月</option>
+                            <option value="2017-8"{if condition="$ReceiveData.time1 eq  '2017-8'"}selected{/if}>2017年8月</option>
+                            <option value="2017-9"{if condition="$ReceiveData.time1 eq  '2017-9'"}selected{/if}>2017年9月</option>
+                            <option value="2017-10"{if condition="$ReceiveData.time1 eq  '2017-10'"}selected{/if}>2017年10月</option>
+                            <option value="2017-11"{if condition="$ReceiveData.time1 eq  '2017-11'"}selected{/if}>2017年11月</option>
+                            <option value="2017-12"{if condition="$ReceiveData.time1 eq  '2017-12'"}selected{/if}>2017年12月</option>
                         </select>
                         <span>至</span>
                         <select style="margin-left:10px;" class="time2">
-                            <option value="2016年12月">2016年12月</option>
-                            <option value="2017年1月">2017年1月</option>
-                            <option value="2017年2月">2017年2月</option>
-                            <option value="2017年3月">2017年3月</option>
-                            <option value="2017年4月">2017年4月</option>
-                            <option value="2017年5月">2017年5月</option>
-                            <option value="2017年6月">2017年6月</option>
-                            <option value="2017年7月">2017年7月</option>
-                            <option value="2017年8月">2017年8月</option>
-                            <option value="2017年9月">2017年9月</option>
-                            <option value="2017年10月">2017年10月</option>
-                            <option value="2017年11月">2017年11月</option>
-                            <option value="2017年12月">2017年12月</option>
+                            <option value="2016-12"{if condition="$ReceiveData.time2 eq  '2016-12'"}selected{/if}>2016年12月</option>
+                            <option value="2017-1"{if condition="$ReceiveData.time2 eq  '2017-1'"}selected{/if}>2017年1月</option>
+                            <option value="2017-2"{if condition="$ReceiveData.time2 eq  '2017-2'"}selected{/if}>2017年2月</option>
+                            <option value="2017-3"{if condition="$ReceiveData.time2 eq  '2017-3'"}selected{/if}>2017年3月</option>
+                            <option value="2017-4"{if condition="$ReceiveData.time2 eq  '2017-4'"}selected{/if}>2017年4月</option>
+                            <option value="2017-5"{if condition="$ReceiveData.time2 eq  '2017-5'"}selected{/if}>2017年5月</option>
+                            <option value="2017-6"{if condition="$ReceiveData.time2 eq  '2017-6'"}selected{/if}>2017年6月</option>
+                            <option value="2017-7"{if condition="$ReceiveData.time2 eq  '2017-7'"}selected{/if}>2017年7月</option>
+                            <option value="2017-8"{if condition="$ReceiveData.time2 eq  '2017-8'"}selected{/if}>2017年8月</option>
+                            <option value="2017-9"{if condition="$ReceiveData.time2 eq  '2017-9'"}selected{/if}>2017年9月</option>
+                            <option value="2017-10"{if condition="$ReceiveData.time2 eq  '2017-10'"}selected{/if}>2017年10月</option>
+                            <option value="2017-11"{if condition="$ReceiveData.time2 eq  '2017-11'"}selected{/if}>2017年11月</option>
+                            <option value="2017-12"{if condition="$ReceiveData.time2 eq  '2017-12'"}selected{/if}>2017年12月</option>
                         </select>
                     </div>
 
@@ -331,10 +334,6 @@
                 var group_id = $('.group_id').val();
                url=url.substr(0,url.length-5);
 
-                time1=time1.replace("年","-");
-                time1=time1.substr(0,time1.length-1);
-                time2=time2.replace("年","-");
-                time2=time2.substr(0,time2.length-1);
                 url=url+"/group_id/"+group_id+"/time1/"+encodeURI(time1)+"/time2/"+encodeURI(time2);
                 window.location.href=url;
 

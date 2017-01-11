@@ -24,7 +24,7 @@
             <div class="one_nav_m">
                 <a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
                 <a href="">日报</a>
-                <a href="{:url('Thing/index')}">事</a>
+                <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
 
                 <a href="{:url('Group/defaultPage',array('group_id'=>$group_result.id))}">人</a>
                 {if condition="$position_result eq 1"}

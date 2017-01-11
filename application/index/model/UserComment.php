@@ -64,4 +64,10 @@ class UserComment extends Model
 
 
     }
+    public  function getByUser($parm){
+
+        return $this->where($parm)->select();
+    }
+
+
 }

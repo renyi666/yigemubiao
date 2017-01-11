@@ -75,6 +75,7 @@ class Target extends Base
             $targetWhere['target_time'] = strtotime(date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), 1, date("Y"))));
 
         }
+
         //查询一个目标结果
         $targetResult = $targetM->getOne($targetWhere);
 
@@ -94,7 +95,7 @@ class Target extends Base
 
 
 
-        $endTime = strtotime(date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day')));//截止到当前月份的最后一天
+        $endTime = strtotime(date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day')))+60*60*24;//截止到当前月份的最后一天
         //判断前台页面是否该显示编辑按钮
 
         if ($targetResult['target_time'] > $endTime) {

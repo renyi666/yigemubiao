@@ -77,7 +77,40 @@ class DailyComment extends  Model
         return $this->where($parm)->update($where);
 
     }
+    /**返回每个组员的差评数目
+     * @param $parm
+     * @return int
+     */
 
+    public  function  getCount($parm){
+
+        $parm1['time1'] = strtotime(date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), 1, date("Y"))));
+
+        $parm1['time2'] = strtotime(date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day')))+60*60*24;
+        $parm['create_time']    =array('between',array($parm1['time1'],$parm1['time2']));
+        $userCommentM = new  UserComment();
+
+      $result= $userCommentM->getByUser($parm);
+
+        $count  =   0;
+        foreach ( $result as $key=>$value){
+            $where['id']    =   $value['comment_id'];
+              $res    =   $this->where($where)->find();
+
+            if($res['type']==1 ){
+                $count+=1;
+
+            }
+
+
+
+        }
+
+
+
+
+        return $count;
+    }
 
 
 }

@@ -64,7 +64,7 @@ class Daily extends  Model
      */
     public  function getAll($parm){
 
-        return $this->where($parm)->select();
+        return $this->where($parm)->order('limit_time  desc')->select();
     }
 
     /**查找单条记录,返回user_id

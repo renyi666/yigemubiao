@@ -61,7 +61,7 @@
 							<th>身份</th>
 							<th>状态</th>
 							<th>上月是否送出差评</th>
-							<th>本月目标</th>
+							<!--<th>本月目标</th>-->
 							<th>管理</th>
 						</tr>
 					</thead>
@@ -72,8 +72,8 @@
 							<td class="person_phone">{$res.mobile}</td>
 							<td>{if condition="$res.position eq 1"}组长{else/}组员{/if}</td>
 							<td class="person_state">{if condition="$res.status eq 1"}在职{else/}离职{/if}</td>
-							<td>是</td>
-							<td><a href="one_ target.html">有</a></td>
+							<td>{$res.chaping}</td>
+							<!--<td><a href="one_ target.html">有</a></td>-->
 
 							<td><span data-state="{$res.status}" data-uid="{$res.id}" class="group_user_status">{if condition="$res.status eq 1"}标记为已离职{else/}标记为在职{/if}</span></td>
 

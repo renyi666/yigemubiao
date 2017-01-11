@@ -83,6 +83,8 @@ class Member extends Model
             return -111;
         }
 
+        $userInfo   =   $this->where($where)->find();
+        session('userInfo',$userInfo);
         return $result;
 
     }

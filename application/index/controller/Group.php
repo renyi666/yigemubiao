@@ -24,8 +24,10 @@
 namespace app\index\controller;
 
 
+use app\index\model\DailyComment;
 use app\index\model\GroupMember;
 use app\index\model\Member;
+use app\index\model\UserComment;
 use think\Request;
 
 class Group extends Base
@@ -34,6 +36,7 @@ class Group extends Base
 
     public function index()
     {
+
 
         $this->isLogin();
         $groupM = new \app\index\model\Group();
@@ -153,12 +156,15 @@ class Group extends Base
         $data = Request::instance();
         $list = $data->param();
         $groupMemberM = new GroupMember();
+        $userCommentM  =  new  UserComment();
+        $dailyCommentM   = new  DailyComment();
 
         $groupM = new \app\index\model\Group();
 
         $where['id'] = $list['group_id'];
 
         $group_result = $groupM->search($where);
+
         $this->assign('group_result', $group_result['0']);
 
         //吧小组信息放到session里
@@ -192,6 +198,22 @@ class Group extends Base
             ->field('g.user_id,g.position,g.status,m.nickname,m.mobile,m.id')
             ->join('member m', 'm.id=g.user_id')
             ->select();
+
+unset($where);
+        $where['group_id']  =   $list['group_id'];
+
+
+        //筛选差评的数目
+        foreach ($result as $key =>$v){
+
+            $where['user_id']   =   $v['user_id'];
+            $where['status']    =   1;
+
+
+            $result[$key]['chaping']    =   $dailyCommentM->getCount($where);
+
+        }
+
 
 
         $this->assign('result', $result);

@@ -127,19 +127,28 @@ class Daily extends Base
 
         if(input('time1')!=null&&input('time2')!=null){
             unset($receiveData);
+            $ReceiveData['time1']   =   input('time1');
+            $ReceiveData['time2']   =   input('time2');
+
             $receiveData['time1']   =   strtotime(input('time1'));
             $receiveData['time2']   = strtotime(input('time2')."-30");
+            $receiveData['time2']   = strtotime(date('Y-m-d', strtotime(date('Y-m-01', strtotime(input('time2'))) . ' +1 month -1 day')))+60*60*24;
+
 
             foreach ($dailyResult as $k=>$v){
 
-                if($v['create_time']>$receiveData['time2']||$v['create_time']<$receiveData['time1']){
+                if($v['limit_time']>$receiveData['time2']||$v['limit_time']<$receiveData['time1']){
 
                     unset($dailyResult[$k]);
                 }
             }
 
-        }
+        }else{
+            $ReceiveData['time1']   =   0;
+            $ReceiveData['time2']   =   0;
 
+        }
+        $this->assign('ReceiveData',$ReceiveData);
         $this->assign('dailyResult', $dailyResult);
 
         $groupInfo = $this->getGroupInfo($parm1);
