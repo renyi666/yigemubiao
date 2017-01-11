@@ -26,8 +26,9 @@
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="#" class="active">项目</a>
-				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				{if condition="$position_result eq 1"}
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 
@@ -67,8 +68,8 @@
 
 						<div class="thing_title">
 							<a href="{:url('detail',array('group_id'=>$groupInfo['id'],'thing_id'=>$res['id']))}">
-								<span>{$res.name}</span> -
-								<span>{$res.nickname}</span>
+								<h3><span>{$res.name}</span> -
+								<span>{$res.nickname}</span></h3>
 							</a>
 						</div>
 						{if condition="$res.shoucang eq  1"}

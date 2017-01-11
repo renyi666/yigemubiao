@@ -16,7 +16,7 @@
 		<div class="one_nav">
 			<div class="one_nav_l">
 				<h2>
-					<a href="choose_group.html">
+					<a href="{:url('Group/index')}">
 						{$groupInfo.name}
 
 						<img src="__PUBLIC__/images/one.png"/>
@@ -27,8 +27,9 @@
 				<a href="#" class="active">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
-				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				{if condition="$Think.session.position_result eq 1"}
+
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 			</div>
@@ -96,8 +97,8 @@
 				<div class="one_info_mid">
 					<div class="oim_info">
 						<h2>{empty name="$tergetResult.name"}
-						默认模板名称{else/}{$tergetResult.name}{/empty}</h2>
-						<p>{empty name="$tergetResult.content"}默认模板内容{else/}{$tergetResult.content}{/empty}</p>
+						暂未设置目标{else/}{$tergetResult.name}{/empty}</h2>
+						<p>{empty name="$tergetResult.content"}{else/}{$tergetResult.content}{/empty}</p>
 						<figure>
 							<!--<img src="__PUBLIC__/images/5.png">-->
 						</figure>
@@ -105,8 +106,8 @@
 					<h3>
 						{if condition="$tergetResult.bianji eq 1"}
 						<a id="compile" data-id="{$tergetResult.id}" data-name="{$tergetResult.name}" data-content="{$tergetResult.content}">编辑</a>{/if}
-						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">评论{$targetCommentResultNumber.0}条</a>
-						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">差评{$targetCommentResultNumber.1}条</a>
+						{empty name="$tergetResult.name"}</a>{else/}<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">评论{$targetCommentResultNumber.0}条</a>
+						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">差评{$targetCommentResultNumber.1}条{/empty}
 					</h3>
 				</div>
 			{/empty}
@@ -130,7 +131,7 @@
 				</form>
 			</div>
 			<div class="one_info_bottom">
-				<pre><h3>目标的smart原则</h3>
+				<pre><a href="http://wiki.mbalib.com/wiki/SMART%E5%8E%9F%E5%88%99"><h3>目标的smart原则</h3></a>
 
 1. 具体的（Specific） 
 2. 可衡量的（Measurable） 

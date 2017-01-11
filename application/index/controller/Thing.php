@@ -90,7 +90,7 @@ class Thing extends Base
 
         }
 
-//判断result是否有结果，若有结果则操作
+        //判断result是否有结果，若有结果则操作
         if ($result != null) {
 
             foreach ($result as $key1 => $v) {
@@ -127,30 +127,55 @@ class Thing extends Base
         $collection_where['status'] = 1;
         $collection_result = $thingCollectionM->getCollection($collection_where);
 
+
         //把collection_result转换成以逗号形式表示的
-        foreach ($collection_result as $key => $value) {
+
+if($collection_result!=null){
+
+    foreach ($collection_result as $key => $value) {
 
 
-            $collection_result1[$key] = $value['thing_id'];
+        $collection_result1[$key] = $value['thing_id'];
+
+    }
+
+    //给collection_result增加一个字段判断是否收藏
+    foreach ($result as $key1 => $value1) {
+
+        if (in_array($value1['id'], $collection_result1)) {
+
+            $result[$key1]['shoucang'] = 1;
+
+        } else {
+            $result[$key1]['shoucang'] = 2;
+
 
         }
 
 
-        //给collection_result增加一个字段判断是否收藏
-        foreach ($result as $key1 => $value1) {
-
-            if (in_array($value1['id'], $collection_result1)) {
-
-                $result[$key1]['shoucang'] = 1;
-
-            } else {
-                $result[$key1]['shoucang'] = 2;
+    }
+}else{
+    //给collection_result增加一个字段判断是否收藏
+    foreach ($result as $key1 => $value1) {
 
 
-            }
+            $result[$key1]['shoucang'] = 2;
 
 
-        }
+
+
+
+    }
+
+}
+
+
+
+
+
+
+
+
 
 
         $data = array_unique($data1);
@@ -172,6 +197,8 @@ class Thing extends Base
 
     public function add()
     {
+
+
 
         $groupmemberM = new GroupMember();
         $groupM = new Group();

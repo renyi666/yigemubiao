@@ -95,7 +95,7 @@ class Target extends Base
 
 
 
-        $endTime = strtotime(date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day')))+60*60*24;//截止到当前月份的最后一天
+        $endTime = strtotime(date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day')));//截止到当前月份的最后一天
         //判断前台页面是否该显示编辑按钮
 
         if ($targetResult['target_time'] > $endTime) {

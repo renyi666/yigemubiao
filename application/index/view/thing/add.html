@@ -33,8 +33,9 @@
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}" class="active">项目</a>
-				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				{if condition="$Think.session.position_result eq 1"}
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 			</div>
@@ -62,7 +63,6 @@
 					</div>
 					<div class="add_thing_item">
 						<span>责任人：</span>
-						<!--<select class="charge_user selectpicker"  >-->
 						<select id="my-select1"  class="charge_user" name="my-select[]">
 
 						{volist name="member_result" id="mem"}
@@ -71,14 +71,7 @@
 						</select>
 
 					</div>
-					<!--<select multiple="multiple" id="my-select" name="my-select[]">-->
-						<!--<option value='elem_1'>elem 1</option>-->
-						<!--<option value='elem_2'>elem 2</option>-->
-						<!--<option value='elem_3'>elem 3</option>-->
-						<!--<option value='elem_4'>elem 4</option>-->
 
-						<!--<option value='elem_100'>elem 100</option>-->
-					<!--</select>-->
 					<p class="lg_btn_p fcolor_red" >× 事不可为空</p>
 					<div class="add_thing_item">
 						<span></span>
@@ -179,7 +172,7 @@
 							success: function (data) {
 
 								if (data == "1") {
-									var url	=	"{:url('index')}";
+									var url	=	"{$Think.server.HTTP_REFERER}";
 									url	=	url.substr(0,(url.length)-5);
 
 									window.location.href=url+"/group_id/"+id;
@@ -209,7 +202,7 @@
 							success: function (data) {
 
 								if (data == "1") {
-									var url	=	"{:url('index')}";
+									var url	=	"{$Think.server.HTTP_REFERER}";
 									url	=	url.substr(0,(url.length)-5);
 
 									window.location.href=url+"/group_id/"+id;

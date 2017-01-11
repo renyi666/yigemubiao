@@ -26,8 +26,9 @@
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
 				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
-				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				{if condition="$Think.session.position_result eq 1"}
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
+
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 			</div>
@@ -63,20 +64,10 @@
 							<option value="{$thcores.id}">{$thcores.name}</option>
 							{/volist}
 						</select>
-						<!--<input type="text" value="" class="add_dp_choose"/>-->
-						<!--<button type="button">搜索</button>-->
+
 						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增事</a>
 					</div>
-					<!--<div class="add_dp_item2">-->
-						<!--<ul>-->
 
-							<!--<li>-->
-								<!--<input type="radio" value="{$thcores.id}" name="thing" class="add_dp_thing"/><span>{$thcores.name}</span>-->
-							<!--</li>-->
-
-
-						<!--</ul>-->
-					<!--</div>-->
 					<div class="add_dp_item">
 						<label><span>描</span>述：</label>
 						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="" placeholder=""></textarea>

@@ -26,9 +26,10 @@
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('Daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('Thing/index',array('group_id'=>$group_result.id))}">项目</a>
+				{if condition="$position_result.position eq 1"}
 				<a href="#" class="active">人</a>
 
-				{if condition="$position_result.position eq 1"}
+
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 			</div>
@@ -75,7 +76,7 @@
 							<td>{$res.chaping}</td>
 							<!--<td><a href="one_ target.html">有</a></td>-->
 
-							<td><span data-state="{$res.status}" data-uid="{$res.id}" class="group_user_status">{if condition="$res.status eq 1"}标记为已离职{else/}标记为在职{/if}</span></td>
+							<td>{if condition="$res.position eq 1"}{else/}<span data-state="{$res.status}" data-uid="{$res.id}" class="group_user_status">{if condition="$res.status eq 1"}标记为已离职{else/}标记为在职{/if}</span>{/if}</td>
 
 						</tr>
 					{/volist}

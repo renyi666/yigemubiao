@@ -46,15 +46,20 @@ class Group extends Base
         $uid = session('uid');
         $result = $groupMemberM->getAllByUser($uid);
 
-        foreach ($result as $key => $value) {
 
-            $data[$key] = $value['group_id'];
+        if($result!=null){
+
+            foreach ($result as $key => $value) {
+
+                $data[$key] = $value['group_id'];
+
+            }
+            $data = implode(',', $data);
+            $where['id'] = array('in', $data);
+            unset($result);
+            $result = $groupM->search($where);
 
         }
-        $data = implode(',', $data);
-        $where['id'] = array('in', $data);
-        unset($result);
-        $result = $groupM->search($where);
 
 
         $this->assign('result', $result);
@@ -199,7 +204,7 @@ class Group extends Base
             ->join('member m', 'm.id=g.user_id')
             ->select();
 
-unset($where);
+            unset($where);
         $where['group_id']  =   $list['group_id'];
 
 
@@ -217,6 +222,12 @@ unset($where);
 
 
         $this->assign('result', $result);
+
+
+        if($position_result['position']!=1){
+
+            $this->redirect('Target/index',['group_id'=>$list['group_id']]);
+        }
         return $this->fetch();
 
     }

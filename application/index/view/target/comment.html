@@ -16,7 +16,7 @@
 		<div class="one_nav">
 			<div class="one_nav_l">
 				<h2>
-					<a href="choose_group.html">
+					<a href="{:url('Group/index')}">
 						{$groupInfo.name}
 						<img src="__PUBLIC__/images/one.png"/>
 					</a>
@@ -26,8 +26,9 @@
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}" class="active">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
 				<a href="{:url('index',array('group_id'=>$groupInfo['id']))}">项目</a>
-				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				{if condition="$Think.session.position_result eq 1"}
+
+				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 				<a href="{:url('check/index',array('group_id'=>$groupInfo['id']))}">匿名评论审核</a>
 				{/if}
 			</div>
@@ -53,7 +54,6 @@
 
 						<label class="checkbox-inline">
 						  <input type="checkbox" id="inlineCheckbox2" value=""> 差评
-							<input type="checkbox" id="commenttype" value="">
 						</label>
 						<span id="comment_fb">发布</span>
 						<!--<i>凡是匿名的评论的，数据库也不准记录评论人，程序员也无法查看，做到真正的匿名！！！</i>-->
@@ -111,7 +111,6 @@
 		$('#inlineCheckbox2').click(function () {
 
 			$(this).val("1");
-			$('#commenttype').val("1");
 			console.log($(this).val())
 
 		})
