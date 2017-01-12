@@ -33,15 +33,11 @@ class DailyComment extends Base
      * @return false|int
      */
     public  function addComment(){
-
         $dailyCommentM  = new  \app\index\model\DailyComment();
         $request   =  Request::instance();
         $list   =$request->param();
-
         $result =   $dailyCommentM->addComment($list);
         return $result;
-
-
     }
 
 

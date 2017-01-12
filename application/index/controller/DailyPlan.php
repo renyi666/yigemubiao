@@ -33,7 +33,6 @@ class DailyPlan extends Base
      */
     public function addPlan()
     {
-
         $request = Request::instance();
         $list = $request->param();
         $dailyPlanM = new  \app\index\model\DailyPlan();
@@ -46,15 +45,11 @@ class DailyPlan extends Base
         unset($list['time3']);
         unset($list['time4']);
         $result = $dailyPlanM->addPlan($list);
-
-
         if ($result == 0) {
 
             return $this->showError(-120);
         }
         return $this->successReturn();
-
-
     }
     public  function  deletePlan(){
 
@@ -62,7 +57,6 @@ class DailyPlan extends Base
         $dailyPlanM  = new   \app\index\model\DailyPlan();
         $result =   $dailyPlanM->deletePlan($where);
         return $result;
-
     }
     public  function editPlan(){
         $request         =  Request::instance();
@@ -76,13 +70,8 @@ class DailyPlan extends Base
         unset($list['time3']);
         unset($list['time4']);
         $dailyPlanM =   new  \app\index\model\DailyPlan();
-
         $result =   $dailyPlanM->editPlan($list);
-
-
         return $result;
-
-
     }
 
 }

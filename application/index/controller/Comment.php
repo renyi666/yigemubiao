@@ -28,7 +28,6 @@ class Comment extends  Base
 {
 
     public  function index(){
-
         $commentM   =   new \app\index\model\Comment();
         //获取小组信息
         $list['id'] = input('group_id');
@@ -37,12 +36,8 @@ class Comment extends  Base
         //个人信息
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
-
         $parm['thing_log_id']   =   input('thing_log_id');
-
         $comment_result =   $commentM->getByThingLogId($parm);
-
-
         return $this->fetch();
     }
 }

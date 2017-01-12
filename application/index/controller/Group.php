@@ -36,32 +36,21 @@ class Group extends Base
 
     public function index()
     {
-
-
         $this->isLogin();
         $groupM = new \app\index\model\Group();
         $groupMemberM = new GroupMember();
-
         //筛选当前用户所属的小组
         $uid = session('uid');
         $result = $groupMemberM->getAllByUser($uid);
-
-
         if($result!=null){
-
             foreach ($result as $key => $value) {
-
                 $data[$key] = $value['group_id'];
-
             }
             $data = implode(',', $data);
             $where['id'] = array('in', $data);
             unset($result);
             $result = $groupM->search($where);
-
         }
-
-
         $this->assign('result', $result);
         return $this->fetch();
     }
@@ -70,19 +59,14 @@ class Group extends Base
     public function createGroup()
     {
         $data = Request::instance();
-
         $list = $data->param();
         $list['charge_user'] = session('uid');
-
         $groupM = new \app\index\model\Group();
         $result = $groupM->createGroup($list);
-
         //创建失败返回错误信息
         if ($result <= 0) {
-
             return $this->showError($result);
         }
-
         return $result;
     }
 
@@ -93,28 +77,20 @@ class Group extends Base
         $list = $data->param();
         $groupMemberM = new GroupMember();
         $result = $groupMemberM->joinGroup($list);
-
         if ($result <= 0) {
-
             return $this->showError($result);
         }
-
         return 1;
     }
 
     //修改离职在职状态
     public function editStatus()
     {
-
         $data = Request::instance();
         $list = $data->param();
-
-
         $groupMemberM = new GroupMember();
         $result = $groupMemberM->editStatus($list);
-
         if ($result <= 0) {
-
             return $this->showError($result);
         }
         return $result;
@@ -127,28 +103,20 @@ class Group extends Base
         $list = $data->param();
         $groupMemberM = new GroupMember();
         $result = $groupMemberM->getAllUser($list);
-
-
         return $result;
-
-
     }
 
     //小组增加成员
     public function addUser()
     {
-
         $data = Request::instance();
         $list = $data->param();
         $groupMemberM = new GroupMember();
         $result = $groupMemberM->addUser($list);
-
         if ($result <= 0) {
             return $this->showError($result);
         }
         return $result;
-
-
     }
 
     //选择小组后进去的第一个页面
@@ -156,76 +124,48 @@ class Group extends Base
     {//传递过来的参数应该包括小组id,在职状态
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
-
-
         $data = Request::instance();
         $list = $data->param();
         $groupMemberM = new GroupMember();
         $userCommentM  =  new  UserComment();
         $dailyCommentM   = new  DailyComment();
-
         $groupM = new \app\index\model\Group();
-
         $where['id'] = $list['group_id'];
-
         $group_result = $groupM->search($where);
-
         $this->assign('group_result', $group_result['0']);
-
         //吧小组信息放到session里
         session('groupInfo', $group_result['0']);
-
         $position_where['user_id'] = $userInfo['id'];
         $position_where['group_id'] = $list['group_id'];
         $position_result = $groupMemberM->getPosition($position_where);
         session('position_result', $position_result['position']);
         $this->assign('position_result', $position_result);
-
         //判断status的信息，，为了方便选择搜索
         if (!array_key_exists('status', $list)) {
-
-
             $list['status'] = 0;
             $this->assign('status', $list['status']);
             unset($list['status']);
         } else {
-
             $this->assign('status', $list['status']);
         }
-
-
         //若刚进去的时候没选状态，会自动清除status字段
         $list = array_filter($list);
-
         $result = $groupMemberM
             ->alias('g')
             ->where($list)
             ->field('g.user_id,g.position,g.status,m.nickname,m.mobile,m.id')
             ->join('member m', 'm.id=g.user_id')
             ->select();
-
-            unset($where);
+        unset($where);
         $where['group_id']  =   $list['group_id'];
-
-
         //筛选差评的数目
         foreach ($result as $key =>$v){
-
             $where['user_id']   =   $v['user_id'];
             $where['status']    =   1;
-
-
             $result[$key]['chaping']    =   $dailyCommentM->getCount($where);
-
         }
-
-
-
         $this->assign('result', $result);
-
-
         if($position_result['position']!=1){
-
             $this->redirect('Target/index',['group_id'=>$list['group_id']]);
         }
         return $this->fetch();

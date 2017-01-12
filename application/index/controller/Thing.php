@@ -507,5 +507,10 @@ class Thing extends Base
 
     }
 
+    public  function ceshi(){
+
+
+        return $this->fetch();
+    }
 
 }
