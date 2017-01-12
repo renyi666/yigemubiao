@@ -129,6 +129,11 @@
 	    			  
 	    	}
 	    });
+		$('.phone').each(function(){
+			var phone = $(this).text();
+			var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+			$(this).text(mphone)
+		});
 	});
 </script>
 </body>

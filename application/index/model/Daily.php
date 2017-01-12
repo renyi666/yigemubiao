@@ -36,6 +36,9 @@ class Daily extends  Model
 
         Db::startTrans();
         $where['limit_time']    =   $parm['limit_time'];
+        $where['group_id']    =   $parm['group_id'];
+        $where['user_id']    =   $parm['user_id'];
+
         $return_result  =   $this->where($where)->find();
         if($return_result!=null){
 

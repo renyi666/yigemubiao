@@ -78,7 +78,7 @@ class Daily extends Base
          */
         $this->assign('tommorrowData', $tommorrowData);
 
-
+dump($tommorrow);
         $parm['group_id'] = input('group_id');
         $parm1['id'] = input('group_id');
 
@@ -150,7 +150,7 @@ class Daily extends Base
         }
         $this->assign('ReceiveData',$ReceiveData);
         $this->assign('dailyResult', $dailyResult);
-
+//dump($dailyResult);
         $groupInfo = $this->getGroupInfo($parm1);
 
         //把小组id赋值到模板
@@ -186,7 +186,7 @@ class Daily extends Base
         $where['time'] = strtotime($where['time']);
 
         $parm['limit_time'] = $where['time'] + 1;//当日凌晨零点  0:0:1
-        $parm['user_id'] = session('uid');
+        $parm['user_id'] = session('userInfo.id');
         $dailyM = new \app\index\model\Daily();
 
         /**
@@ -195,7 +195,8 @@ class Daily extends Base
         $parm['week'] = date("N", $parm['limit_time']);
 
 
-        $result = $dailyM->add_plan_empty($parm);
+
+     $result = $dailyM->add_plan_empty($parm);
         if ($result <= 0) {
 
             return $this->showError($result);

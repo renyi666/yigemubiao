@@ -47,7 +47,8 @@
 				<input type="hidden" value="{$userInfo.id}" class="user_id">
 				<input type="hidden" value="{$result.name}" class="thing_name">
 				<span>&nbsp;-&nbsp;{$result.user_name}</span>
-				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$result['id']))}" class="compile_thing">编辑</a>
+				{if condition="$Think.session.userInfo.id eq $result.user_id"}
+				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$result['id']))}" class="compile_thing">编辑</a>{/if}
 			</div>
 			<div class="thing_message">
 				<div class="thing_top">

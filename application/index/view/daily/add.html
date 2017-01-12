@@ -141,34 +141,90 @@
 						.css('padding-left','70px');
 				return;
 			}
-			if(time1==''||time1==null||time1==undefined||isNaN(time1)){
-				$(".fcolor_red").show()
-						.text('× 时间错误！')
-						.css('text-align','left')
-						.css('padding-left','70px');
-				return;
-			}if(time2==''||time2==null||time2==undefined||isNaN(time2)){
-				$(".fcolor_red").show()
-						.text('× 时间错误！')
-						.css('text-align','left')
-						.css('padding-left','70px');
-				return;
+			if(type==1){
+
+				if(time1!=null){
+
+					if(isNaN(time1)){
+
+						$(".fcolor_red").show()
+								.text('× 时间错误！')
+								.css('text-align','left')
+								.css('padding-left','70px');
+						return;
+					}
+				}
+				if(time2!=null){
+
+					if(isNaN(time2)){
+
+						$(".fcolor_red").show()
+								.text('× 时间错误！')
+								.css('text-align','left')
+								.css('padding-left','70px');
+						return;
+					}
+				}
+				if(time3!=null){
+
+					if(isNaN(time3)){
+
+						$(".fcolor_red").show()
+								.text('× 时间错误！')
+								.css('text-align','left')
+								.css('padding-left','70px');
+						return;
+					}
+				}
+				if(time4!=null){
+
+					if(isNaN(time4)){
+
+						$(".fcolor_red").show()
+								.text('× 时间错误！')
+								.css('text-align','left')
+								.css('padding-left','70px');
+						return;
+					}
+				}
+
 			}
-			if(time3==''||time3==null||time3==undefined||isNaN(time3)){
-				$(".fcolor_red").show()
-						.text('× 时间错误！')
-						.css('text-align','left')
-						.css('padding-left','70px');
-				return;
+			if(type==2){
+
+				if(time1==''||time1==null||time1==undefined||isNaN(time1)){
+					$(".fcolor_red").show()
+							.text('× 时间错误！')
+							.css('text-align','left')
+							.css('padding-left','70px');
+					return;
+				}if(time2==''||time2==null||time2==undefined||isNaN(time2)){
+					$(".fcolor_red").show()
+							.text('× 时间错误！')
+							.css('text-align','left')
+							.css('padding-left','70px');
+					return;
+				}
+				if(time3==''||time3==null||time3==undefined||isNaN(time3)){
+					$(".fcolor_red").show()
+							.text('× 时间错误！')
+							.css('text-align','left')
+							.css('padding-left','70px');
+					return;
+				}
+
+				if(time4==''||time4==null||time4==undefined||isNaN(time4)){
+					$(".fcolor_red").show()
+							.text('× 时间错误！')
+							.css('text-align','left')
+							.css('padding-left','70px');
+					return;
+				}
+
+
 			}
 
-			if(time4==''||time4==null||time4==undefined||isNaN(time4)){
-				$(".fcolor_red").show()
-						.text('× 时间错误！')
-						.css('text-align','left')
-						.css('padding-left','70px');
-				return;
-			}
+
+
 			if(content==''||content==null||content==undefined){
 				$(".fcolor_red").show()
 						.text('× 描述错误！')

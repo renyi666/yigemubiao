@@ -127,55 +127,67 @@ class Thing extends Base
         $collection_where['status'] = 1;
         $collection_result = $thingCollectionM->getCollection($collection_where);
 
+        //把下标排序
+        $result =   array_values($result);
 
         //把collection_result转换成以逗号形式表示的
+        if ($collection_result != null) {
 
-if($collection_result!=null){
-
-    foreach ($collection_result as $key => $value) {
+            foreach ($collection_result as $key => $value) {
 
 
-        $collection_result1[$key] = $value['thing_id'];
+                $collection_result1[$key] = $value['thing_id'];
 
-    }
+            }
 
-    //给collection_result增加一个字段判断是否收藏
-    foreach ($result as $key1 => $value1) {
+            //给collection_result增加一个字段判断是否收藏
+            foreach ($result as $key1 => $value1) {
 
-        if (in_array($value1['id'], $collection_result1)) {
+                if (in_array($value1['id'], $collection_result1)) {
 
-            $result[$key1]['shoucang'] = 1;
+                    $result[$key1]['shoucang'] = 1;
+
+                } else {
+                    $result[$key1]['shoucang'] = 2;
+
+
+                }
+
+
+            }
+
+            //冒泡排序，让收藏的在前边
+          $number       =count($result);
+            for ($i=0;$i<$number;$i++){
+
+
+                for ($j=$i;$j<$number;$j++){
+
+                    if($result[$i]['shoucang']>$result[$j]['shoucang']){
+
+                        $temp   =$result[$i];
+                        $result[$i] =$result[$j];
+                        $result[$j] =$temp;
+
+                    }
+
+
+
+                }
+
+            }
 
         } else {
-            $result[$key1]['shoucang'] = 2;
+            //给collection_result增加一个字段判断是否收藏
+            foreach ($result as $key1 => $value1) {
 
+
+                $result[$key1]['shoucang'] = 2;
+
+
+            }
 
         }
-
-
-    }
-}else{
-    //给collection_result增加一个字段判断是否收藏
-    foreach ($result as $key1 => $value1) {
-
-
-            $result[$key1]['shoucang'] = 2;
-
-
-
-
-
-    }
-
-}
-
-
-
-
-
-
-
-
 
 
         $data = array_unique($data1);
@@ -197,7 +209,6 @@ if($collection_result!=null){
 
     public function add()
     {
-
 
 
         $groupmemberM = new GroupMember();
@@ -261,7 +272,7 @@ if($collection_result!=null){
         $memberM = new Member();
         $thingM = new  \app\index\model\Thing();
         $thingLogM = new ThingLog();
-        $dailyCommentM  = new  DailyComment();
+        $dailyCommentM = new  DailyComment();
         //获取小组信息
         $list['id'] = input('group_id');
         $groupInfo = $this->getGroupInfo($list);
@@ -293,19 +304,17 @@ if($collection_result!=null){
         $log_result = $thingLogM->getByThingId($parm_log);
         foreach ($log_result as $k => $v) {
             $where['id'] = $v['user_id'];
-
             $log_result_member = $memberM->getUser($where);
             $log_result[$k]['user_name'] = $log_result_member['nickname'];
+            $where_comment['thinglog_id'] = $v['id'];
+            $dailyCommentaResult = $dailyCommentM->getAllByDailyPlanId($where_comment);
+            $log_result[$k]['comment_number'] = count($dailyCommentaResult);
+            $log_result[$k]['comment_count'] = 0;
+            foreach ($dailyCommentaResult as $key => $value) {
 
-            $where_comment['thinglog_id']   =   $v['id'];
-            $dailyCommentaResult    =$dailyCommentM->getAllByDailyPlanId($where_comment);
-            $log_result[$k]['comment_number']   =   count($dailyCommentaResult);
-            $log_result[$k]['comment_count']    =0;
-            foreach($dailyCommentaResult as $key =>$value){
+                if ($value['type'] == 1) {
 
-                if($value['type']==1){
-
-                    $log_result[$k]['comment_count']+=1;
+                    $log_result[$k]['comment_count'] += 1;
                 }
             }
 
@@ -360,31 +369,24 @@ if($collection_result!=null){
 
         $userInfo = session('userInfo');
         $this->assign('userInfo', $userInfo);
-        $dailyM   =  new  Daily();
+        $dailyM = new  Daily();
         $memberM = new  Member();
         //判断是否接收到user_id的参数值
-        $receive['user_id'] =   input('user_id');
+        $receive['user_id'] = input('user_id');
 
         //接收时间参数
-        $receive['time1']   =input('time1');
-        $receive['time2']   =   input('time2');
-
-
+        $receive['time1'] = input('time1');
+        $receive['time2'] = input('time2');
 
 
         //假如时间筛选条件存在
-        if(isset($receive['time1'])&&isset($receive['time2'])){
+        if (isset($receive['time1']) && isset($receive['time2'])) {
 
-            $receive['time1']   =   strtotime($receive['time1']);//从月份的第一天开始
-            $receive['time2']   =  strtotime(date('Y-m-d', strtotime(date('Y-m-01', strtotime($receive['time2'])) . ' +1 month -1 day')));//截止到月份的最后一天
-
-
+            $receive['time1'] = strtotime($receive['time1']);//从月份的第一天开始
+            $receive['time2'] = strtotime(date('Y-m-d', strtotime(date('Y-m-01', strtotime($receive['time2'])) . ' +1 month -1 day')));//截止到月份的最后一天
 
 
         }
-
-
-
 
 
         $where['thing_id'] = input('thing_id');
@@ -399,44 +401,39 @@ if($collection_result!=null){
 
         $Dailyresult = $dailyPlanM->getWorkByDailyId($where);
         //查找成员信息
-        foreach ($Dailyresult as $key =>$value){
+        foreach ($Dailyresult as $key => $value) {
 
-            $dailyWhere['id']   =   $value['daily_id'];
-            $dailyResult=$dailyM->getOne($dailyWhere);
-            $DailyPaper[$key]['user_id']= $memberWhere['id']=$Dailyresult[$key]['user_id']    =  $dailyResult['user_id'];
+            $dailyWhere['id'] = $value['daily_id'];
+            $dailyResult = $dailyM->getOne($dailyWhere);
+            $DailyPaper[$key]['user_id'] = $memberWhere['id'] = $Dailyresult[$key]['user_id'] = $dailyResult['user_id'];
 
-           $Dailyresult[$key]['group_id']    =  $dailyResult['user_id'];
-            $DailyPaper[$key]['user_name']=  $Dailyresult[$key]['user_name'] =   $memberM->getNameById($memberWhere);
+            $Dailyresult[$key]['group_id'] = $dailyResult['user_id'];
+            $DailyPaper[$key]['user_name'] = $Dailyresult[$key]['user_name'] = $memberM->getNameById($memberWhere);
 
 
             //如果接受的user_id不是数字说明不用筛选 否则要选择相等的user_id
-            if(is_numeric($receive['user_id'])&&$receive['user_id']!=0){
+            if (is_numeric($receive['user_id']) && $receive['user_id'] != 0) {
 
-            if($Dailyresult[$key]['user_id']!=$receive['user_id']){
+                if ($Dailyresult[$key]['user_id'] != $receive['user_id']) {
 
 
-                unset($Dailyresult[$key]);
+                    unset($Dailyresult[$key]);
+                }
+
+
             }
 
 
-            }
+            $this->assign('dailypaper', $DailyPaper);
 
 
-
-            $this->assign('dailypaper',$DailyPaper);
-
+        };
 
 
-        }
+        if (isset($receive['time1']) && isset($receive['time2'])) {
 
-
-       ;
-
-
-        if(isset($receive['time1'])&&isset($receive['time2'])){
-
-            foreach ($Dailyresult as $k=>$v){
-                if($v['create_time']<$receive['time1']||$v['create_time']>$receive['time2']){
+            foreach ($Dailyresult as $k => $v) {
+                if ($v['create_time'] < $receive['time1'] || $v['create_time'] > $receive['time2']) {
 
                     unset($Dailyresult[$k]);
                 }
@@ -446,14 +443,13 @@ if($collection_result!=null){
         }
 
         //把选择组员的id传到模板
-        if(is_numeric($receive['user_id'])&&$receive['user_id']!=0){
-          $this->assign('select_userID',$receive['user_id']);
-        }else{
+        if (is_numeric($receive['user_id']) && $receive['user_id'] != 0) {
+            $this->assign('select_userID', $receive['user_id']);
+        } else {
 
-            $receive['user_id']=0;
-            $this->assign('select_userID',$receive['user_id']);
+            $receive['user_id'] = 0;
+            $this->assign('select_userID', $receive['user_id']);
         }
-
 
 
         $this->assign('dailyResult', $Dailyresult);

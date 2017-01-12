@@ -76,6 +76,15 @@ class Target extends Base
 
         }
 
+
+        //把前台传递过来的时间转换
+        $panduan    =   date('Y-m',$targetWhere['target_time']);
+        $selectTime['1']    =   substr($panduan,0,4);
+        $selectTime['2']    =   substr($panduan,6,2)*1;
+
+        $this->assign('selectTime',$selectTime);
+
+
         //查询一个目标结果
         $targetResult = $targetM->getOne($targetWhere);
 

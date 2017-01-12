@@ -88,13 +88,13 @@
                     <div class="daily_paper_add">
                         <form name="form1" method="post" action="">
 
-                            <select name="year" style="width: 50px;margin-right: 5px;" value="{$tommorrowData.year}">
+                            <select name="year" style="width: 50px;margin-right: 5px;" >
                             </select>年
                             <select name="month" style="width: 35px;margin-left:5px;margin-right:5px;"
-                                    value="{$tommorrowData.month}">
+                                    >
                             </select>月
                             <select name="day" style="width: 35px;margin-left:5px;margin-right:5px;"
-                                    value="{$tommorrowData.day}">
+                                   >
                             </select>日
                         </form>
 
@@ -113,8 +113,10 @@
                             <h3>{:date('Y年m月d日',$dares.limit_time)}(周{$dares.week})</h3>
                             <div class="dpil_top_title">
                                 <span>当日计划</span>
-                                {if condition="$dares.limit_time gt $today"} <a
-                                    href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>1])}">增加</a>{/if}
+                                {if condition="$dares.user_id eq $Think.session.userInfo.id"}
+                                {if condition="$dares.limit_time gt $today"}
+                                <a
+                                    href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>1])}">增加</a>{/if}{/if}
 
                             </div>
                             <div class="dpil_top_info">
@@ -124,9 +126,11 @@
                                         <div class="dpilt_info_item">
                                             <div class="dpilti_item_title">
                                                 <span>{$i}.{$daplan.name}</span>
+                                                {if condition="$dares.user_id eq $Think.session.userInfo.id"}
                                                 {if condition="$dares.limit_time gt $today"}
                                                 <a href="{:url('edit',array('id'=>$daplan['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
                                                 <button class="deletePlan" data-id="{$daplan.id}">删除</button>
+                                                {/if}
                                                 {/if}
                                             </div>
                                             <p>{$daplan.content}</p>
@@ -141,7 +145,8 @@
                         <div class="dpi_list_top dpi_list_bottom">
                             <div class="dpil_top_title dpil_bottom_title">
                                 <span>实际工作</span>
-                                {if condition="$dares.timeDifference eq 1"} <a href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>2])}">增加</a>{/if}
+                                {if condition="$dares.user_id eq $Think.session.userInfo.id"}
+                                {if condition="$dares.timeDifference eq 1"} <a href="{:url('add',['id'=>$dares['id'],'group_id'=>$groupInfo['id'],'type'=>2])}">增加</a>{/if}{/if}
 
                             </div>
                             <div class="dpil_top_info dpil_bottom_info">
@@ -151,9 +156,11 @@
                                         <div class="dpilt_info_item dpilb_info_item">
                                             <div class="dpilti_item_title dpilbi_item_title">
                                                 <span>{$i}.{$dawork.name}</span>
+                                                {if condition="$dares.user_id eq $Think.session.userInfo.id"}
                                                 {if condition="$dares.timeDifference eq 1"}
                                                 <a href="{:url('edit',array('id'=>$dawork['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
                                                 <button class="deletePlan" data-id="{$dawork.id}">删除</button>
+                                                {/if}
                                                 {/if}
                                             </div>
                                             <p>{$dawork.content}</p>
@@ -242,7 +249,7 @@
                     break;
             }
             for (day = 1; day <= total; day++) {
-                currentDay = currentDay + "<option value='" + day + "'>" + day + "</option>";
+                currentDay = currentDay + "<option value='" + day + "' >" + day + "</option>";
             }
             $('select[name=day]').html(currentDay);//生成日期下拉菜单
         })
@@ -278,7 +285,10 @@
 
                             if (data == "1") {
 
-                                window.location.reload();
+                                var url="{:url('Daily/index')}";
+                                url=url.substr(0,url.length-5);
+                                url=url+"/group_id/"+group_id;
+                                window.location.href=url;
                             } else {
 
                                 console.log(data)

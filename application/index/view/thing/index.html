@@ -65,7 +65,7 @@
 				<ul>
 					{volist name="result" id="res"}
 					<li>
-
+						<div class="thing_border">
 						<div class="thing_title">
 							<a href="{:url('detail',array('group_id'=>$groupInfo['id'],'thing_id'=>$res['id']))}">
 								<h3><span>{$res.name}</span> -
@@ -79,6 +79,7 @@
 						<div class="thing_state"></div>
 						<div class="thing_state_button"  data-state="{$res.id}" data-groupId="{$res.group_id}">收藏</div>
 						{/if}
+							</div>
 					</li>
 					{/volist}
 

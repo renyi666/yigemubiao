@@ -41,7 +41,7 @@ class DailyPlan extends Model
         $dailyComment = new DailyComment();
         $parm['type'] = 1;
 
-        $result = $this->where($parm)->order('sort desc')->select();
+        $result = $this->where($parm)->order('sort asc')->select();
 
         //统计评论数目和差评数目
         foreach ($result as  $key =>$value){
@@ -67,7 +67,7 @@ class DailyPlan extends Model
         $dailyComment = new DailyComment();
 
         $parm['type'] = 2;
-        $result =$this->where($parm)->order('sort desc')->select();
+        $result =$this->where($parm)->order('sort asc')->select();
 
         //统计评论数目和差评数目
 

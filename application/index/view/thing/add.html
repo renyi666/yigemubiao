@@ -63,10 +63,10 @@
 					</div>
 					<div class="add_thing_item">
 						<span>责任人：</span>
-						<select id="my-select1"  class="charge_user" name="my-select[]">
+						<select id="my-select1"  class="charge_user">
 
 						{volist name="member_result" id="mem"}
-							<option value="{$mem.id}" {if condition="$userInfo.id eq $mem.id"} selceted{/if}>{$mem.nickname}</option>
+							<option value="{$mem.id}" {if condition="$userInfo.id eq $mem.id"}selected{/if}>{$mem.nickname}</option>
 							{/volist}
 						</select>
 

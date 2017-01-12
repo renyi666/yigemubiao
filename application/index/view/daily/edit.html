@@ -208,7 +208,8 @@ var id=$('.daily_id').val();
 						success:function (data) {
 							if(data==1){
 
-								window.location.reload()
+								 var url="{$Think.server.HTTP_REFERER}";
+								window.location.href=url;
 							}
 							else {
 
