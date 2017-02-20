@@ -25,7 +25,7 @@
 			<div class="one_nav_m">
 				<a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
 				<a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}" class="active">日报</a>
-				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">事</a>
+				<a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
 				{if condition="$Think.session.position_result eq 1"}
 				<a href="{:url('group/defaultPage',array('group_id'=>$groupInfo['id']))}">人</a>
 
@@ -56,38 +56,26 @@
 						<input type="tel" value="{$result.time4}" class="add_dp_time time4"/><i>分</i>
 					</div>
 					<div class="add_dp_item">
-						<label>选择事：</label>
+						<label>选择项目：</label>
 						<select class="add_dp_choose" name="add_dp_choose">
 
 							{volist name="thingCoRes" id="thcores"}
 							<option value="{$thcores.id}" {if condition="$result.thing_id eq $thcores.id"}selected{/if}>{$thcores.name}</option>
 							{/volist}
 						</select>
-						<!--<input type="text" value="" class="add_dp_choose"/>-->
-						<!--<button type="button">搜索</button>-->
-						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增事</a>
+
+						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增项目</a>
 					</div>
-					<!--<div class="add_dp_item2">-->
-						<!--<ul>-->
-
-							<!--<li>-->
-								<!--<input type="radio" value="{$thcores.id}" name="thing" class="add_dp_thing"/><span>{$thcores.name}</span>-->
-							<!--</li>-->
-
-
-						<!--</ul>-->
-					<!--</div>-->
 					<div class="add_dp_item">
 						<label><span>描</span>述：</label>
-						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" value="{$result.content}" placeholder="">{$result.content}</textarea>
+						<textarea id="content" name="content" class="form-control kindeditor" style="height:150px;" >{$result.content}</textarea>
 					</div>
 					<p class="lg_btn_p fcolor_red" >× 请输入正确的手机号或密码</p>
 					<div class="add_dp_item">
 						<label></label>
 						<a id="add_dp_save">保存</a>
-						<a href="daily_paper.html" style="margin-left:45px;" id="add_dp_cancel">取消</a>
+						<a href="javascript:history.go(-1)" style="margin-left:45px;" id="add_dp_cancel">取消</a>
 					</div>
-					
 				</form>
 			</div>
 		</div>	
@@ -126,6 +114,11 @@
 //			console.log(thingId);
 //
 //		})
+		$('.phone').each(function(){
+			var phone = $(this).text();
+			var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+			$(this).text(mphone)
+		});
 		$("#add_dp_save").click(function(){
 
 			$("#content").val($(".article-content").text());
@@ -187,7 +180,7 @@ var id=$('.daily_id').val();
 			if(thingId==''||thingId==null||thingId==undefined){
 
 				$(".fcolor_red").show()
-						.text('× 事不可为空！')
+						.text('× 项目不可为空！')
 						.css('text-align','left')
 						.css('padding-left','70px');
 				return;
@@ -209,7 +202,7 @@ var id=$('.daily_id').val();
 							if(data==1){
 
 								 var url="{$Think.server.HTTP_REFERER}";
-								window.location.href=url;
+								window.location.href=url
 							}
 							else {
 

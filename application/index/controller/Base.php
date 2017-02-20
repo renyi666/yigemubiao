@@ -261,4 +261,15 @@ class Base extends Controller
 
     }
 
+    public  function _empty(){
+
+
+
+        dump(__CLASS__);
+        dump(__METHOD__);
+        dump(__FUNCTION__);
+        dump("cccc");
+        exit();
+    }
+
 }

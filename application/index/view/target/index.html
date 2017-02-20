@@ -110,7 +110,7 @@
 
 						<a id="compile" data-id="{$tergetResult.id}" data-name="{$tergetResult.name}" >        编辑</a>{/if}{/if}
 						{empty name="$tergetResult.name"}</a>{else/}<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">评论{$targetCommentResultNumber.0}条</a>
-						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">差评{$targetCommentResultNumber.1}条{/empty}
+						<a href="{:url('target/comment',array('group_id'=>$groupInfo['id'],'target_id'=>$targetId))}">差评{$targetCommentResultNumber.1}条</a>{/empty}
 					</h3>
 				</div>
 			{/empty}
@@ -184,6 +184,8 @@
 //			var content1	=	$(this).attr("data-content");
 			var content1	=	$('.target-CONTENT').val();
 			$('.target_input').val(name1);
+			console.log(name1);
+			console.log(content1);
 			editor.html(content1);
 	    	$(".one_info_compile").show();
 	    	$(".one_info_mid").hide();

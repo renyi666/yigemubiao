@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>新增事</title>
+	<title>新增项目</title>
 	<!-- 新 Bootstrap 核心 CSS 文件 -->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/css/zui.min.css">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/chosen.css"/>
 	<link rel="stylesheet" href="__PUBLIC__/css/main.css">
 	<link rel="stylesheet" href="__PUBLIC__/css/jquery.multiselect.css">
 	<link rel="stylesheet" href="__PUBLIC__/css/multi-select.css">
+
 
 	<!-- Latest compiled and minified CSS -->
 
@@ -48,31 +50,40 @@
 		<div class="one_info">
 			<div class="add_thing">
 				{if condition ="$panduan eq 0"}
-				<h3>增加事</h3>{else/}
-				<h3>编辑事</h3>{/if}
+				<h3>增加项目</h3>{else/}
+				<h3>编辑项目</h3>{/if}
 				<input type="hidden" value="{$panduan}" class="panduan">
 				<form action="">
 					<div class="add_thing_item">
-						<span>事：</span>
+						<i>项目：</i>
 						{if condition ="$panduan eq 0"}
 						<input type="text" value="" class="thing_name"/>
 						{else/}
 						<input type="text" value="{$thing_result.name}" class="thing_name"/>
 						<input type="hidden" value="{$thing_result.id}" class="thing_id">
 						{/if}
-					</div>
-					<div class="add_thing_item">
-						<span>责任人：</span>
-						<select id="my-select1"  class="charge_user">
 
-						{volist name="member_result" id="mem"}
+					</div>
+
+					<div class="add_thing_item">
+						<i>责任人：</i>
+						<select class="chosen-select" multiple="multiple">
+							{volist name="member_result" id="mem"}
+							{if condition ="$panduan eq 0"}
+
 							<option value="{$mem.id}" {if condition="$userInfo.id eq $mem.id"}selected{/if}>{$mem.nickname}</option>
+
+							{else/}
+
+
+							<option value="{$mem.id}"{in name="$mem.id" value="$thing_result.user_id"}selected{/in}>{$mem.nickname}</option>
+							{/if}
+
 							{/volist}
 						</select>
-
 					</div>
 
-					<p class="lg_btn_p fcolor_red" >× 事不可为空</p>
+					<p class="lg_btn_p fcolor_red" >× 项目不可为空</p>
 					<div class="add_thing_item">
 						<span></span>
 						<button type="button" id="thing_save">保存</button>
@@ -84,46 +95,32 @@
 		</div>	
 	</div>
 </div>
-<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.4.min.js"></script>
+<!--<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.4.min.js"></script>-->
 <!--<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>-->
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
-<script src="__PUBLIC__/kindeditor/kindeditor-all-min.js"></script>
-<!--<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>-->
 
 
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script type="text/javascript" src="__PUBLIC__/js/bootstrap-multiselect.js" ></script>
-
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<!-- Latest compiled and minified JavaScript -->
-
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js" ></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/zui/1.5.0/js/zui.min.js"></script>
-<link rel="stylesheet" href="__PUBLIC__/css/bootstrap-multiselect.css">
-<link rel="stylesheet" href="__PUBLIC__/js/jquery.multiselect.js">
-<link rel="stylesheet" href="__PUBLIC__/js/jquery-ui.min.js">
-<link rel="stylesheet" href="__PUBLIC__/js/jquery.multi-select.js">
+<script type="text/javascript" src="__PUBLIC__/js/chosen.js" ></script>
 
 <script>
 
 
 	$(function() {
-//		$('#my-select').multiSelect()
-//		$('#my-select1').multiSelect()
-		window.editor=KindEditor.create('textarea.kindeditor', {
-		    basePath: '__PUBLIC__/kindeditor/',
-		    bodyClass : 'article-content',
-		    resizeType : 1,
-		    allowPreviewEmoticons : false,
-		    allowImageUpload : false,
-		    minHeight:200,
-		    items : [
-		        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-		        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-		        'insertunorderedlist', '|', 'emoticons', 'image', 'link'
-		    ]
+		//下拉多选框初始化
+		$('.chosen-select').chosen({
+			no_results_text: '没有找到',    // 当检索时没有找到匹配项时显示的提示文本
+			disable_search_threshold: 10, // 10 个以下的选择项则不显示检索框
+			search_contains: true ,        // 从任意位置开始检索
+			allow_single_deselect:false,
+			disable_search:false
 		});
+//		//获得下拉框的值
+//		$('.chosen-select').change(function () {
+//			var userId  	=	$(this).val();
+//
+//			alert(userId)
+//		})
 	    $('.phone').each(function(){
 		    var phone = $(this).text();
 		    var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
@@ -141,13 +138,17 @@
 	    		$(this).siblings('.thing_state').text('')
 			}
 	   });
+
 	   $(".add_thing_item input").focus(function(){
 	   		$(".thing_name input").val('');
 	   		$(".fcolor_red").hide()
 	   });
 	   $("#thing_save").click(function(){
 	   		var userName		=	$(".thing_name").val();
-			var charge_user		=	$('.charge_user').val();
+		   console.log(userName);
+
+			var charge_user		=	$('.chosen-select').val();
+
 		   var panduan		=	$('.panduan').val();
 
 		   var id	=$('.group_id').val();
@@ -179,11 +180,6 @@
 
 								} else {
 
-									$(".fcolor_red").show().text(data.msg)
-											.css('text-align','left')
-											.css("padding-left","65px")
-											.css('margin-top','-20px')
-											.css('margin-bottom','10px');
 
 
 								}
@@ -201,7 +197,7 @@
 							method: 'post',
 							success: function (data) {
 
-								if (data == "1") {
+								if (data == 1) {
 									var url	=	"{$Think.server.HTTP_REFERER}";
 									url	=	url.substr(0,(url.length)-5);
 
@@ -209,11 +205,7 @@
 
 								} else {
 
-									$(".fcolor_red").show().text(data.msg)
-											.css('text-align','left')
-											.css("padding-left","65px")
-											.css('margin-top','-20px')
-											.css('margin-bottom','10px');
+
 
 
 								}

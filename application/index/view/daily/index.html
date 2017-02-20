@@ -125,7 +125,8 @@
                                     <li>
                                         <div class="dpilt_info_item">
                                             <div class="dpilti_item_title">
-                                                <span>{$i}.{$daplan.name}</span>
+                                                <span>{$i}.{$daplan.thing_name}</span>
+
                                                 {if condition="$dares.user_id eq $Think.session.userInfo.id"}
                                                 {if condition="$dares.limit_time gt $today"}
                                                 <a href="{:url('edit',array('id'=>$daplan['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
@@ -133,6 +134,9 @@
                                                 {/if}
                                                 {/if}
                                             </div>
+
+                                            <h4>
+                                                {if condition="$daplan.start_time eq 0"}{else/}{$daplan.start_time}-{$daplan.end_time}{/if}&nbsp;&nbsp;&nbsp;</h4>
                                             <p>{$daplan.content}</p>
                                             <a href="{:url('comment',array('dailyplanid'=>$daplan['id'],'group_id'=>$groupInfo['id']))}"><h3>评论{$daplan.comment_number}条&nbsp;&nbsp;差评{$daplan.comment_count}条</h3></a>
                                         </div>
@@ -155,7 +159,7 @@
                                     <li>
                                         <div class="dpilt_info_item dpilb_info_item">
                                             <div class="dpilti_item_title dpilbi_item_title">
-                                                <span>{$i}.{$dawork.name}</span>
+                                                <span>{$i}.{$dawork.thing_name}</span>
                                                 {if condition="$dares.user_id eq $Think.session.userInfo.id"}
                                                 {if condition="$dares.timeDifference eq 1"}
                                                 <a href="{:url('edit',array('id'=>$dawork['id'],'group_id'=>$groupInfo['id']))}">编辑</a>
@@ -163,6 +167,8 @@
                                                 {/if}
                                                 {/if}
                                             </div>
+
+                                            <h4>{$dawork.start_time}-{$dawork.end_time}&nbsp;&nbsp;&nbsp;{$dawork.yongshi}</h4>
                                             <p>{$dawork.content}</p>
                                             <a href="{:url('comment',array('dailyplanid'=>$dawork['id'],'group_id'=>$groupInfo['id']))}"><h3>评论{$dawork.comment_number}条&nbsp;&nbsp;差评{$dawork.comment_count}条</h3></a>
                                         </div>
@@ -207,13 +213,31 @@
         }
         $('select[name=year]').html(dropList);//生成年份下拉菜单
         var monthly;
+
+        var nowMonth    =   date.getMonth()+1;
+        console.log(nowMonth);
         for (month = 1; month < 13; month++) {
-            monthly = monthly + "<option value='" + month + "'>" + month + "</option>";
+            if(month==nowMonth){
+                monthly = monthly + "<option value='" + month + "'selected>" + month + "</option>";
+
+            }else {
+
+                monthly = monthly + "<option value='" + month + "'>" + month + "</option>";
+
+            }
         }
         $('select[name=month]').html(monthly);//生成月份下拉菜单
         var dayly;
+        var tommorrwday =   date.getDate()+1;
         for (day = 1; day <= 31; day++) {
-            dayly = dayly + "<option value='" + day + "'>" + day + "</option>";
+            if(day==tommorrwday){
+                dayly = dayly + "<option value='" + day + "'selected>" + day + "</option>";
+
+            }else {
+
+                dayly = dayly + "<option value='" + day + "'>" + day + "</option>";
+
+            }
         }
         $('select[name=day]').html(dayly);//生成天数下拉菜单
         /*
@@ -268,6 +292,7 @@
         $('#add_time').click(function () {
 
             var group_id = $('.group_id').val();
+
 
             var day = $("select[name='day']").val();
             var year = $("select[name='year']").val();

@@ -23,7 +23,7 @@
             </div>
             <div class="one_nav_m">
                 <a href="{:url('target/index',array('group_id'=>$groupInfo['id']))}">一个目标</a>
-                <a href="">日报</a>
+                <a href="{:url('daily/index',array('group_id'=>$groupInfo['id']))}">日报</a>
                 <a href="{:url('thing/index',array('group_id'=>$groupInfo['id']))}">项目</a>
                 {if condition="$position_result eq 1"}
 
@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-
+<input type="text" class="last_url" value="{$Think.server.HTTP_REFERER}">
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
@@ -104,8 +104,8 @@
                             method: 'post',
                             success: function (data) {
                                 if (data == "1") {
-
-                                    window.location.reload();
+                                    var url=$('.last_url').val();
+                                    window.location.href=url;
                                 } else {
                                     $(".fcolor_red").show()
                                             .text('data.msg');

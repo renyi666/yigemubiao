@@ -57,7 +57,7 @@
 						<input type="tel" value="" class="add_dp_time time4"/><i>分</i>
 					</div>
 					<div class="add_dp_item">
-						<label>选择事：</label>
+						<label>选择项目：</label>
 						<select class="add_dp_choose" name="add_dp_choose">
 
 							{volist name="thingCoRes" id="thcores"}
@@ -65,7 +65,7 @@
 							{/volist}
 						</select>
 
-						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增事</a>
+						<a href="{:url('thing/add',['group_id'=>$groupInfo['id']])}">新增项目</a>
 					</div>
 
 					<div class="add_dp_item">
@@ -76,7 +76,7 @@
 					<div class="add_dp_item">
 						<label></label>
 						<a id="add_dp_save">保存</a>
-						<a href="daily_paper.html" style="margin-left:45px;" id="add_dp_cancel">取消</a>
+						<a href="javascript:history.go(-1)" style="margin-left:45px;" id="add_dp_cancel">取消</a>
 					</div>
 					
 				</form>
@@ -117,6 +117,11 @@
 //			console.log(thingId);
 //
 //		})
+		$('.phone').each(function(){
+			var phone = $(this).text();
+			var mphone = phone.substr(0, 3) + '****' + phone.substr(8,11);
+			$(this).text(mphone)
+		});
 		$("#add_dp_save").click(function(){
 
 			$("#content").val($(".article-content").text());

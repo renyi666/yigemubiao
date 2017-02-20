@@ -149,7 +149,16 @@
                 'insertunorderedlist', '|', 'emoticons', 'image', 'link'
             ]
         });
+        $('.phone').each(function () {
+            var phone = $(this).text();
+            var mphone = phone.substr(0, 3) + '****' + phone.substr(8, 11);
+            $(this).text(mphone)
+        });
+        $('.phone2').each(function () {
+            var phone = $(this).text();
+            var mphone = phone.substr(0, 3) + '****' + phone.substr(8, 11);
 
+        });
         $('#inlineCheckbox2').click(function () {
             $(this).val("1");
             console.log($(this).val())

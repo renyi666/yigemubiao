@@ -32,6 +32,7 @@ use app\index\model\GroupMember;
 use app\index\model\Member;
 use app\index\model\ThingCollection;
 use app\index\model\ThingLog;
+use think\Log;
 use think\Request;
 
 class Thing extends Base
@@ -71,12 +72,11 @@ class Thing extends Base
             $parm['user_id'] = $list1['id'];
             $this->assign('selectUserID', $parm['user_id']);
             $result = $thing->getAll2($parm);
-
         } else if ($list['name'] != "0") {//搜索框不为空
 
 
             $parm['group_id'] = $groupInfo['id'];
-            $parm['name'] = array('like', '%' . $list['name'] . '%');
+            $parm['t.name'] = array('like', '%' . $list['name'] . '%');
             $this->assign('selectUserID', 0);
             $result = $thing->getAll1($parm);
 
@@ -87,6 +87,7 @@ class Thing extends Base
             $this->assign('selectUserID', 0);
             $parm['group_id'] = $groupInfo['id'];
             $result = $thing->getAll($parm);
+
 
         }
 
@@ -281,10 +282,32 @@ class Thing extends Base
         $parm['id'] = input('thing_id');
         $result = $thingM->getByID($parm);
         //获取用户信息
+
+
+            $where  =   $result['user_id'];
+            $where =   explode(",",$where);
+
+            $result['user_name']   = "";
+            foreach ($where as $k =>$v){
+
+                $list['id'] =   $v;
+                $data   =   $memberM->getNameById($list);
+                if($k==0){
+                    $result['user_name']=$data;
+
+                }else{
+                    $result['user_name']=$result['user_name'].",".$data;
+                }
+            }
+
+
+
+
+
         $parm1['id'] = $result['user_id'];
 
         $user_result = $memberM->getUser($parm1);
-        $result['user_name'] = $user_result['nickname'];
+//        $result['user_name'] = $user_result['nickname'];
         //判断是否三十天内更新
         $condition = $result['update_time'] * 60 * 60 * 24 * 30;
         if ($condition < time()) {
@@ -302,23 +325,31 @@ class Thing extends Base
         //事件更新记录
         $parm_log['thing_id'] = input('thing_id');
         $log_result = $thingLogM->getByThingId($parm_log);
-        foreach ($log_result as $k => $v) {
-            $where['id'] = $v['user_id'];
-            $log_result_member = $memberM->getUser($where);
-            $log_result[$k]['user_name'] = $log_result_member['nickname'];
-            $where_comment['thinglog_id'] = $v['id'];
-            $dailyCommentaResult = $dailyCommentM->getAllByDailyPlanId($where_comment);
-            $log_result[$k]['comment_number'] = count($dailyCommentaResult);
-            $log_result[$k]['comment_count'] = 0;
-            foreach ($dailyCommentaResult as $key => $value) {
+        if($log_result!=null){
 
-                if ($value['type'] == 1) {
+            foreach ($log_result as $k => $v) {
+                unset($where);
+                $where['id'] = $v['user_id'];
 
-                    $log_result[$k]['comment_count'] += 1;
+                $log_result_member = $memberM->getUser($where);
+
+
+                $log_result[$k]['user_name'] = $log_result_member['nickname'];
+                $where_comment['thinglog_id'] = $v['id'];
+                $dailyCommentaResult = $dailyCommentM->getAllByDailyPlanId($where_comment);
+                $log_result[$k]['comment_number'] = count($dailyCommentaResult);
+                $log_result[$k]['comment_count'] = 0;
+                foreach ($dailyCommentaResult as $key => $value) {
+
+                    if ($value['type'] == 1) {
+
+                        $log_result[$k]['comment_count'] += 1;
+                    }
                 }
-            }
 
+            }
         }
+
         $this->assign('log_result', $log_result);
 
 
@@ -332,7 +363,9 @@ class Thing extends Base
         $data = Request::instance();
         $list = $data->param();
         $thingM = new \app\index\model\Thing();
+
         if (isset($list['id'])) {
+
 
             $result = $thingM->updateTing($list);
         } else {
@@ -460,8 +493,28 @@ class Thing extends Base
         $thingResult = $thingM->getByID($where);
         //获取用户的信息
         $where['id'] = array('in', $thingResult['user_id']);
-        $result = $memberM->getUser($where);
-        $thingResult['user_name'] = $result['nickname'];
+
+
+
+        $where  =   $thingResult['user_id'];
+        $where =   explode(",",$where);
+
+        $thingResult['user_name']   = "";
+        foreach ($where as $k =>$v){
+
+            $list['id'] =   $v;
+            $data   =   $memberM->getNameById($list);
+            if($k==0){
+                $thingResult['user_name']=$data;
+
+            }else{
+                $thingResult['user_name']=$thingResult['user_name'].",".$data;
+            }
+        }
+
+
+//        $result = $memberM->getUser($where);
+//        $thingResult['user_name'] = $result['nickname'];
 
 
         $this->assign('thingResult', $thingResult);

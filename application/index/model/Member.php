@@ -108,4 +108,12 @@ class Member extends Model
 
         return $this->where($parm)->value('nickname');
     }
+
+    /**
+     * @return mixed
+     */
+    public  function profile(){
+
+        return $this->hasMany('Daily','user_id');
+    }
 }

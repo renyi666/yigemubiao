@@ -43,7 +43,8 @@
 			<div class="one_info_top thing_message_head">
 				<span>{$thingResult.name}</span>
 				<span>&nbsp;-&nbsp;{$thingResult.user_name}</span>
-				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$thingResult['id']))}" class="compile_thing">编辑</a>
+				{if condition="$Think.session.userInfo.id eq $thingResult.user_id"}
+				<a href="{:url('add',array('group_id'=>$groupInfo['id'],'thing_id'=>$thingResult['id']))}" class="compile_thing">编辑</a>{/if}
 			</div>
 			<div class="thing_message">
 				<div class="thing_top" style="border:none;padding-bottom:0;">

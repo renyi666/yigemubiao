@@ -90,11 +90,14 @@ class Daily extends Base
             $dailyPlanWhere['daily_id'] = $value['id'];
             $dailyResult[$key]['plan'] = $dailyPlanM->getPlanByDailyId($dailyPlanWhere);
             $dailyResult[$key]['work'] = $dailyPlanM->getWorkByDailyId($dailyPlanWhere);
+
             $timeDifference = time() - $value['limit_time'];
+
             /*
              * 求出时间差。判断是否是当天该有的操作
              */
-            if ($timeDifference > 0 && $timeDifference <= 60 * 60 * 24) {
+            if ($timeDifference > 0 && $timeDifference <= 60 * 60 * 24){
+
                 $dailyResult[$key]['timeDifference'] = 1;
             } else {
                 $dailyResult[$key]['timeDifference'] = 2;
@@ -116,6 +119,7 @@ class Daily extends Base
             $ReceiveData['time1'] = 0;
             $ReceiveData['time2'] = 0;
         }
+//        dump($dailyResult);
         $this->assign('ReceiveData', $ReceiveData);
         $this->assign('dailyResult', $dailyResult);
         $groupInfo = $this->getGroupInfo($parm1);
